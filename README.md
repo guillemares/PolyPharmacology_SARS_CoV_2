@@ -1,1 +1,1 @@
-# PolyPharmacology_SARS_CoV_2
+# PolyPharmacology_SARS-CoV-2
