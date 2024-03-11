@@ -1,0 +1,29 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 11, RMSD=   3.92, Seq_ID=n_identical/n_aligned= 0.840
+Average TM-score= 0.09823 (normalized by length of shorter structure: L=31, d0=0.81)
+Average TM-score= 0.09823 (normalized by length of longer structure: L=31, d0=0.81)
+Average TM-score= 0.09823 (normalized by average L=31.00 and d0=0.81)
+In the following, seqID=n_identical/L.
+
+>./DPR.pdb:A	L=31	d0=0.81	seqID=0.462	TM-score=0.15840	*
+---------------------------------------gau-cuc-----uuguagauc---ugu-------------u------------cucuaaacgaac
+>./DPR_0.pdb:A	L=31	d0=0.81	seqID=0.253	TM-score=0.07213
+---------------------------------------ga-ucuc-----uuguagauc---uguucucuaaacgaac-------------------------
+>./DPR_1.pdb:A	L=31	d0=0.81	seqID=0.333	TM-score=0.09193
+ga-----------------------ucuc--uuguagau-----------------------cugu-------------u------------cucuaaacgaac
+>./DPR_2.pdb:A	L=31	d0=0.81	seqID=0.059	TM-score=0.03589
+--gaucucuuguagaucug--u-ucucu-a------------------------aac-gaac------------------------------------------
+>./DPR_3.pdb:A	L=31	d0=0.81	seqID=0.376	TM-score=0.14583
+-----------------ga--u-cucuu-g------------------------uag-au--cugu-------------u------------cucuaaacgaac
+>./DPR_4.pdb:A	L=31	d0=0.81	seqID=0.339	TM-score=0.10072
+-------------------gaucu------cuu------------guagau--------c---ugu-------------u------------cucuaaacgaac
+>./DPR_5.pdb:A	L=31	d0=0.81	seqID=0.263	TM-score=0.08269
+----------------------------------------gaucuc-----uuguagauc---ugu-------------ucucuaaacgaac------------
+
+#Total CPU time is  0.03 seconds

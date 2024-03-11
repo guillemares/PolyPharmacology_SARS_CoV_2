@@ -1,0 +1,35 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 18, RMSD=   3.40, Seq_ID=n_identical/n_aligned= 0.852
+Average TM-score= 0.23174 (normalized by length of shorter structure: L=27, d0=0.70)
+Average TM-score= 0.23174 (normalized by length of longer structure: L=27, d0=0.70)
+Average TM-score= 0.23174 (normalized by average L=27.00 and d0=0.70)
+In the following, seqID=n_identical/L.
+
+>./3dRNA_SL1.pred1.min.pdb:_	L=27	d0=0.70	seqID=0.650	TM-score=0.23159
+--gguuu--au-------accu-------u-c-c----cag-gu----aa-c-aaacc--
+>./3dRNA_SL1.pred10.min.pdb:_	L=27	d0=0.70	seqID=0.667	TM-score=0.26201
+--gguuu--au-------accu-uc------c-c----a--ggu----a-ac-aaacc--
+>./3dRNA_SL1.pred2.min.pdb:_	L=27	d0=0.70	seqID=0.675	TM-score=0.31892	*
+--gguuu--au-------acc-------u------u-cccaggu----a-ac-aaacc--
+>./3dRNA_SL1.pred3.min.pdb:_	L=27	d0=0.70	seqID=0.630	TM-score=0.26795
+--gguuu--au-------acc-------uu-c-c----caggua------ac-aaacc--
+>./3dRNA_SL1.pred4.min.pdb:_	L=27	d0=0.70	seqID=0.309	TM-score=0.04972
+gg---uu-uau-------acc-u------u-c-cc----agguaacaa---------acc
+>./3dRNA_SL1.pred5.min.pdb:_	L=27	d0=0.70	seqID=0.539	TM-score=0.10896
+---gguu-uau-------acc-------u------u-cccaggu----a-aca--aacc-
+>./3dRNA_SL1.pred6.min.pdb:_	L=27	d0=0.70	seqID=0.547	TM-score=0.24031
+--gguuua-ua-------cc-uu------c-cc--ag-----gu----a-ac-aaacc--
+>./3dRNA_SL1.pred7.min.pdb:_	L=27	d0=0.70	seqID=0.449	TM-score=0.23321
+--gguuu--auaccuucc------cagg--------------------uaac-aaacc--
+>./3dRNA_SL1.pred8.min.pdb:_	L=27	d0=0.70	seqID=0.539	TM-score=0.27555
+--gguuua-ua-------cc-u-uc----cc----ag-----gu----a-ac-aaacc--
+>./3dRNA_SL1.pred9.min.pdb:_	L=27	d0=0.70	seqID=0.675	TM-score=0.32919
+--gguuu--au-------acc-------u------u-cccaggu----a-ac-aaacc--
+
+#Total CPU time is  0.05 seconds

@@ -1,0 +1,21 @@
+$ find . -type d -exec sh -c 'cd "{}" && find . -type f -name "*.pdb" > lista_pdb.txt' \;
+
+serveix per, a la carpeta 3dRNA, trRosetta i DRFold, generar una llista amb TOTS els arxius *.pdb que hi hagi
+aquesta llista serveix més tard per executar un alineament amb US align
+cal assegurar-se que les carpetes no contenen .zip (fer unzip) o .tar (tar -xz)
+
+$ USalign -dir ./ lista_pdb.txt -mm 4 -rasmol sup > 'alignment.txt'
+
+alinear tots els arxius que hi ha al directori (comanda -mm 4) i a més generar els arxius 3d que es poden veure amb el 
+rasmol (comanda -rasmol sup); l'output que s'imprimeix per pantalla es guarda a alignment.txt (els valors de RMSD, 
+TM-score... entre d'altres)
+
+$ tar -cvzf sup*
+
+per si es vol comprimir els arxius del rasmol
+
+----------------------
+
+$ grep -e "TM-score" -e "RMSD" alignment.txt
+
+per buscar als outputs tots els RMSD i TM-scores que necessitem

@@ -1,0 +1,23 @@
+Archivo: model1.pdb
+0 G 1 cW - 14 C 1 cW
+1 A 1 cW - 13 U 1 cW
+2 U 1 cW - 12 A 1 cW
+3 C 1 cW - 11 G 1 cW
+4 U 1 cW - 10 A 1 cW
+5 C 1 cW - 8 G 1 cW
+Archivo: model2.pdb
+0 G 1 cW - 14 C 1 cW
+2 U 1 cW - 12 A 1 cW
+3 C 1 cW - 11 G 1 cW
+4 U 1 cW - 10 A 1 cW
+5 C 1 cW - 8 G 1 cW
+Archivo: model3.pdb
+2 U 1 cW - 12 A 1 cW
+3 C 1 cW - 11 G 1 cW
+4 U 1 cW - 10 A 1 cW
+5 C 1 cW - 8 G 1 cW
+Archivo: model4.pdb
+4 U 2 tW - 10 A 2 tW
+Archivo: model5.pdb
+3 C 1 cW - 12 A 1 cH
+5 C 2 tW - 10 A 2 tH

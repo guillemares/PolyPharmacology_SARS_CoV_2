@@ -1,0 +1,121 @@
+**********************************************************************************************
+                                                                                              
+                     NNNNNNNN        NNNNNNNN        SSSSSSSSSSSSSSS      PPPPPPPPPPPPPPPPP   
+                     N:::::::N       N::::::N      SS:::::::::::::::S     P::::::::::::::::P  
+                     N::::::::N      N::::::N     S:::::SSSSSS::::::S     P::::::PPPPPP:::::P 
+                     N:::::::::N     N::::::N     S:::::S     SSSSSSS     PP:::::P     P:::::P
+                     N::::::::::N    N::::::N     S:::::S                   P::::P     P:::::P
+                     N:::::::::::N   N::::::N     S:::::S                   P::::P     P:::::P
+                     N:::::::N::::N  N::::::N      S::::SSSS                P::::PPPPPP:::::P 
+                     N::::::N N::::N N::::::N       SS::::::SSSSS           P:::::::::::::PP  
+                     N::::::N  N::::N:::::::N         SSS::::::::SS         P::::PPPPPPPPP    
+                     N::::::N   N:::::::::::N            SSSSSS::::S        P::::P            
+                     N::::::N    N::::::::::N                 S:::::S       P::::P            
+                     N::::::N     N:::::::::N                 S:::::S       P::::P            
+                     N::::::N      N::::::::N     SSSSSSS     S:::::S     PP::::::PP          
+                     N::::::N       N:::::::N     S::::::SSSSSS:::::S     P::::::::P          
+                     N::::::N        N::::::N     S:::::::::::::::SS      P::::::::P          
+                     NNNNNNNN         NNNNNNN      SSSSSSSSSSSSSSS        PPPPPPPPPP          
+                                                                                              
+                           Nucleic Acid Prediction method developed by XiaoLab                
+**********************************************************************************************
+Start time: Sun Feb 25 18:44:00 2024
+
+NSP version: 2.0.1
+NSP library path: /home/share/apps/nsp2/lib1
+# Reading sequence
+Seq:GAUCUCUUGUAGAUC
+# Reading secondary structure
+# Set disused pdbs...
+# Check input
+# Constructing 2D Structure Tree
+# Searching records...
+# Printing records...
+Records searching results:
+SSE(0x2a29500):
+  Helix GAUCUAGAUC ((((())))) 1 2 3 4 5 11 12 13 14 15 (38813)
+  Loop CUCUUGUAG ((.....)) 4 5 6 7 8 9 10 11 12  (12143)
+SST (Secondary Structure Tree) : 0x7ffc0f07bcc0
+SSE (0x2a29500) : 
+Helix:  GAUCUAGAUC ((((())))) 1 2 3 4 5 11 12 13 14 15
+Loop:  CUCUUGUAG ((.....)) 4 5 6 7 8 9 10 11 12 
+
+# SSE: 0x2a29500
+SSE (0x2a29500) : 
+Helix:  GAUCUAGAUC ((((())))) 1 2 3 4 5 11 12 13 14 15
+Loop:  CUCUUGUAG ((.....)) 4 5 6 7 8 9 10 11 12 
+# Select template of loop of SSE: 0x2a29500
+# Select template of helix of SSE: 0x2a29500
+# Select the best match!
+## Score of Templates: 20.8
+## Print Templates.
+0x2a29500 : 2L6I_0-2-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+## Score of Templates: 17.8
+## Print Templates.
+0x2a29500 : 4ILM_0-2-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 2
+## Score of Templates: 13
+## Print Templates.
+0x2a29500 : 2D3O_0-84-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 3
+## Score of Templates: 17
+## Print Templates.
+0x2a29500 : 4V8U_10-104-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 4
+## Score of Templates: 11
+## Print Templates.
+0x2a29500 : 6GZ5_0-96-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 5
+## Score of Templates: 17.2
+## Print Templates.
+0x2a29500 : 4V6O_5-163-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 6
+## Score of Templates: 17
+## Print Templates.
+0x2a29500 : 6QNR_13-74-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 7
+## Score of Templates: 11
+## Print Templates.
+0x2a29500 : 5A9Z_0-152-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 8
+## Score of Templates: 12
+## Print Templates.
+0x2a29500 : 4V4H_2-127-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 9
+## Score of Templates: 17.4
+## Print Templates.
+0x2a29500 : 5LZS_5-58-loop-1 2L6I_0-1-helix-5
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 10
+End time: Sun Feb 25 18:44:06 2024
+
+Elapsed seconds: 6.19867s

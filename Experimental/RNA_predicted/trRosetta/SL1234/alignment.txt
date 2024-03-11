@@ -1,0 +1,25 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 75, RMSD=   3.68, Seq_ID=n_identical/n_aligned= 0.961
+Average TM-score= 0.46107 (normalized by length of shorter structure: L=121, d0=4.09)
+Average TM-score= 0.46107 (normalized by length of longer structure: L=121, d0=4.09)
+Average TM-score= 0.46107 (normalized by average L=121.00 and d0=4.09)
+In the following, seqID=n_identical/L.
+
+>./model1.pdb:A	L=121	d0=4.09	seqID=0.676	TM-score=0.50655
+---------------------------------------gguuua-----ua-------ccuucccag------gua-----ac----aaacc-aaccaacuuucg---aucucuugu-------agaucuguucucuaaacgaacuuuaaa----------------------------------------------aucuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./model2.pdb:A	L=121	d0=4.09	seqID=0.483	TM-score=0.42363
+gguuuauaccuucccagguaacaaaccaaccaacuuucg------------------------------------------------------------------aucu--------cuuguaga---ucuguucucuaaacgaacuuuaaa----------------------------------------------aucuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./model3.pdb:A	L=121	d0=4.09	seqID=0.713	TM-score=0.55071	*
+---------------------------------------ggu-uu-----a-u-acc--uu-------ccc--aggu-----a-ac-aaac-c-aaccaacuuucg---aucucuugu-------agaucuguucucuaaacgaacuuuaaa----------------------------------------------aucuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./model4.pdb:A	L=121	d0=4.09	seqID=0.705	TM-score=0.55497
+---------------------------------------ggu-uu-----a-uaccuuc----------cc--a-gg-----u-aacaaac-c-aaccaacuuucg---aucucuugu-------agaucuguucucuaaacgaacuuuaaa----------------------------------------------aucuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./model5.pdb:A	L=121	d0=4.09	seqID=0.403	TM-score=0.26950
+---------------------------------------ggu-uuauacc------u--u--------cccag--guaacaa---------accaaccaacuuucg---aucucuugu-------agaucuguucucuaaacgaacuuuaaaaucuguguggcugucacucggcugcaugcuuagugcacucacgcag----------------------------------------------
+
+#Total CPU time is  0.20 seconds

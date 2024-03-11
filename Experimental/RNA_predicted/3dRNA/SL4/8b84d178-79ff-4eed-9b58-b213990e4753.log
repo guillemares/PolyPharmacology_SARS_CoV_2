@@ -1,0 +1,190 @@
+**********************************************************************************************
+                                                                                              
+                     NNNNNNNN        NNNNNNNN        SSSSSSSSSSSSSSS      PPPPPPPPPPPPPPPPP   
+                     N:::::::N       N::::::N      SS:::::::::::::::S     P::::::::::::::::P  
+                     N::::::::N      N::::::N     S:::::SSSSSS::::::S     P::::::PPPPPP:::::P 
+                     N:::::::::N     N::::::N     S:::::S     SSSSSSS     PP:::::P     P:::::P
+                     N::::::::::N    N::::::N     S:::::S                   P::::P     P:::::P
+                     N:::::::::::N   N::::::N     S:::::S                   P::::P     P:::::P
+                     N:::::::N::::N  N::::::N      S::::SSSS                P::::PPPPPP:::::P 
+                     N::::::N N::::N N::::::N       SS::::::SSSSS           P:::::::::::::PP  
+                     N::::::N  N::::N:::::::N         SSS::::::::SS         P::::PPPPPPPPP    
+                     N::::::N   N:::::::::::N            SSSSSS::::S        P::::P            
+                     N::::::N    N::::::::::N                 S:::::S       P::::P            
+                     N::::::N     N:::::::::N                 S:::::S       P::::P            
+                     N::::::N      N::::::::N     SSSSSSS     S:::::S     PP::::::PP          
+                     N::::::N       N:::::::N     S::::::SSSSSS:::::S     P::::::::P          
+                     N::::::N        N::::::N     S:::::::::::::::SS      P::::::::P          
+                     NNNNNNNN         NNNNNNN      SSSSSSSSSSSSSSS        PPPPPPPPPP          
+                                                                                              
+                           Nucleic Acid Prediction method developed by XiaoLab                
+**********************************************************************************************
+Start time: Sun Feb 25 18:52:45 2024
+
+NSP version: 2.0.1
+NSP library path: /home/share/apps/nsp2/lib1
+# Reading sequence
+Seq:CUGUGUGGCUGUCACUCGGCUGCAUGCUUAGUGCACUCACGCAG
+# Reading secondary structure
+# Set disused pdbs...
+# Check input
+# Constructing 2D Structure Tree
+# Searching records...
+# Printing records...
+Records searching results:
+SSE(0x1bcab00):
+  Helix CUGUGUGGUCACGCAG (((((((()))))))) 1 2 3 4 5 6 7 8 37 38 39 40 41 42 43 44 (14059)
+  Loop GGCUGCACUC ((.(()).)) 7 8 9 10 11 34 35 36 37 38  (8933)
+SSE(0x1bc9a50):
+  Helix UGCA (()) 10 11 34 35 (59023)
+  Loop UGUCAUGCA ((.(()))) 10 11 12 13 14 32 33 34 35  (25855)
+SSE(0x1bc89a0):
+  Helix CACUAGUG (((()))) 13 14 15 16 30 31 32 33 (45622)
+  Loop CUCGGCUUAG ((.(()).)) 15 16 17 18 19 27 28 29 30 31  (8933)
+SSE(0x1bc7840):
+  Helix GGCGCU ((())) 18 19 20 26 27 28 (54114)
+  Loop GCUGCAUGC ((.....)) 19 20 21 22 23 24 25 26 27  (12143)
+SST (Secondary Structure Tree) : 0x7ffd0f0b76a0
+SSE (0x1bcab00) : 
+Helix:  CUGUGUGGUCACGCAG (((((((()))))))) 1 2 3 4 5 6 7 8 37 38 39 40 41 42 43 44
+Loop:  GGCUGCACUC ((.(()).)) 7 8 9 10 11 34 35 36 37 38 
+SSE (0x1bc9a50) : 
+Helix:  UGCA (()) 10 11 34 35
+Loop:  UGUCAUGCA ((.(()))) 10 11 12 13 14 32 33 34 35 
+SSE (0x1bc89a0) : 
+Helix:  CACUAGUG (((()))) 13 14 15 16 30 31 32 33
+Loop:  CUCGGCUUAG ((.(()).)) 15 16 17 18 19 27 28 29 30 31 
+SSE (0x1bc7840) : 
+Helix:  GGCGCU ((())) 18 19 20 26 27 28
+Loop:  GCUGCAUGC ((.....)) 19 20 21 22 23 24 25 26 27 
+
+# SSE: 0x1bcab00
+SSE (0x1bcab00) : 
+Helix:  CUGUGUGGUCACGCAG (((((((()))))))) 1 2 3 4 5 6 7 8 37 38 39 40 41 42 43 44
+Loop:  GGCUGCACUC ((.(()).)) 7 8 9 10 11 34 35 36 37 38 
+# Select template of loop of SSE: 0x1bcab00
+# Select template of helix of SSE: 0x1bcab00
+# Select the best match!
+# SSE: 0x1bc9a50
+SSE (0x1bc9a50) : 
+Helix:  UGCA (()) 10 11 34 35
+Loop:  UGUCAUGCA ((.(()))) 10 11 12 13 14 32 33 34 35 
+# Select template of loop of SSE: 0x1bc9a50
+# Select template of helix of SSE: 0x1bc9a50
+# Select the best match!
+# SSE: 0x1bc89a0
+SSE (0x1bc89a0) : 
+Helix:  CACUAGUG (((()))) 13 14 15 16 30 31 32 33
+Loop:  CUCGGCUUAG ((.(()).)) 15 16 17 18 19 27 28 29 30 31 
+# Select template of loop of SSE: 0x1bc89a0
+# Select template of helix of SSE: 0x1bc89a0
+# Select the best match!
+# SSE: 0x1bc7840
+SSE (0x1bc7840) : 
+Helix:  GGCGCU ((())) 18 19 20 26 27 28
+Loop:  GCUGCAUGC ((.....)) 19 20 21 22 23 24 25 26 27 
+# Select template of loop of SSE: 0x1bc7840
+# Select template of helix of SSE: 0x1bc7840
+# Select the best match!
+## Score of Templates: 62.6
+## Print Templates.
+0x1bcab00 : 4UJC_2-32-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 2MHI_0-2-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 6GZZ_5-85-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 1J5A_0-124-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+## Score of Templates: 49.6
+## Print Templates.
+0x1bcab00 : 6ND5_0-55-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 3JAG_5-28-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 5WIS_0-120-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 6D9J_3-38-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 2
+## Score of Templates: 46
+## Print Templates.
+0x1bcab00 : 5L3P_0-97-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 4V5P_12-133-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 4DV2_0-83-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 1N8R_0-12-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 3
+## Score of Templates: 48.6
+## Print Templates.
+0x1bcab00 : 4V5B_2-75-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 5V93_0-147-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 4V7S_1-99-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 4WRO_3-4-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 4
+## Score of Templates: 47.6
+## Print Templates.
+0x1bcab00 : 6NF8_0-53-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 6GSJ_5-128-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 4U4U_4-30-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 5GAG_2-180-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 5
+## Score of Templates: 43.2
+## Print Templates.
+0x1bcab00 : 4V9D_3-91-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 4V8N_5-107-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 4U3U_4-17-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 5LZS_2-87-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 6
+## Score of Templates: 49
+## Print Templates.
+0x1bcab00 : 5KPS_1-58-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 1OND_0-66-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 6DZP_0-146-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 2A2E_0-4-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 7
+## Score of Templates: 48.6
+## Print Templates.
+0x1bcab00 : 4V7J_4-115-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 4U4O_0-7-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 4U56_1-25-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 6QNQ_11-88-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 8
+## Score of Templates: 49.8
+## Print Templates.
+0x1bcab00 : 6OXI_8-119-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 6BZ6_3-25-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 1JZY_0-112-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 6ENF_2-175-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 9
+## Score of Templates: 49.4
+## Print Templates.
+0x1bcab00 : 5FDV_3-117-loop-2 4X4V_0-2-helix-8
+0x1bc9a50 : 4U4Q_5-83-loop-2 3JCE_1-71-helix-2
+0x1bc89a0 : 4V5B_2-12-loop-2 5TC1_0-4-helix-4
+0x1bc7840 : 6BZ7_12-89-loop-1 6FTJ_0-197-helix-3
+## Position Templates.
+## Assemble Templates.
+## Transform.
+# Writing sampling structure 10
+End time: Sun Feb 25 18:53:05 2024
+
+Elapsed seconds: 19.608s

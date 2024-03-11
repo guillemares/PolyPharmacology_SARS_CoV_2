@@ -1,0 +1,10 @@
+./SL4_3dRNA.pred1.min.pdb
+./SL4_3dRNA.pred10.min.pdb
+./SL4_3dRNA.pred2.min.pdb
+./SL4_3dRNA.pred3.min.pdb
+./SL4_3dRNA.pred4.min.pdb
+./SL4_3dRNA.pred5.min.pdb
+./SL4_3dRNA.pred6.min.pdb
+./SL4_3dRNA.pred7.min.pdb
+./SL4_3dRNA.pred8.min.pdb
+./SL4_3dRNA.pred9.min.pdb

@@ -1,0 +1,35 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 28, RMSD=   2.66, Seq_ID=n_identical/n_aligned= 0.957
+Average TM-score= 0.55230 (normalized by length of shorter structure: L=31, d0=0.81)
+Average TM-score= 0.55230 (normalized by length of longer structure: L=31, d0=0.81)
+Average TM-score= 0.55230 (normalized by average L=31.00 and d0=0.81)
+In the following, seqID=n_identical/L.
+
+>./SL23_3dRNA.pred1.min.pdb:_	L=31	d0=0.81	seqID=0.900	TM-score=0.57136
+gaucuc-u-u-guagaucuguuc-u---cuaaa--cgaac
+>./SL23_3dRNA.pred10.min.pdb:_	L=31	d0=0.81	seqID=0.882	TM-score=0.54906
+gaucucuu-g-u-agaucuguuc-u---cuaaa--cgaac
+>./SL23_3dRNA.pred2.min.pdb:_	L=31	d0=0.81	seqID=0.792	TM-score=0.53838
+gaucuc-uug-u-agaucuguucu-----cuaa-acgaac
+>./SL23_3dRNA.pred3.min.pdb:_	L=31	d0=0.81	seqID=0.900	TM-score=0.59507	*
+gaucuc-u-u-guagaucuguuc-u---cuaaa--cgaac
+>./SL23_3dRNA.pred4.min.pdb:_	L=31	d0=0.81	seqID=0.871	TM-score=0.57229
+gaucuc-u-u-guagaucuguuc-u-cu--aaa--cgaac
+>./SL23_3dRNA.pred5.min.pdb:_	L=31	d0=0.81	seqID=0.839	TM-score=0.56756
+gaucuc-u-ugu-agaucuguucu--cu--aaa--cgaac
+>./SL23_3dRNA.pred6.min.pdb:_	L=31	d0=0.81	seqID=0.882	TM-score=0.55700
+gaucucuu-g-u-agaucuguuc-u---cuaaa--cgaac
+>./SL23_3dRNA.pred7.min.pdb:_	L=31	d0=0.81	seqID=0.828	TM-score=0.50095
+gaucucu--u-guagaucuguuc-uc--ua-aa--cgaac
+>./SL23_3dRNA.pred8.min.pdb:_	L=31	d0=0.81	seqID=0.853	TM-score=0.50915
+gaucucu--ugu-agaucuguuc-u---cu-aaa-cgaac
+>./SL23_3dRNA.pred9.min.pdb:_	L=31	d0=0.81	seqID=0.900	TM-score=0.56219
+gaucuc-u-u-guagaucuguuc-u---cuaaa--cgaac
+
+#Total CPU time is  0.06 seconds

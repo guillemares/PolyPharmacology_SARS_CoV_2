@@ -1,0 +1,86 @@
+Archivo: model1.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+3 U 1 cW - 23 A 1 cW
+4 U 1 cW - 22 A 1 cW
+5 A 1 cW - 20 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+8 C 1 cW - 17 G 1 cW
+9 C 1 cW - 16 G 1 cW
+10 U 1 cW - 15 A 1 cW
+Archivo: model2.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+4 U 1 cW - 22 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+8 C 1 cW - 17 G 1 cW
+9 C 1 cW - 16 G 1 cW
+10 U 1 cW - 15 A 1 cW
+Archivo: model3.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+3 U 1 cW - 23 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+9 C 1 cW - 16 G 1 cW
+Archivo: model4.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+5 A 1 cW - 20 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+8 C 1 cW - 17 G 1 cW
+Archivo: model5.pdb
+2 U 1 cW - 25 C 1 cW
+3 U 1 cW - 24 A 1 cW
+4 U 1 cW - 23 A 1 cW
+6 U 1 cW - 19 A 1 cW
+Archivo: sup.0.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+3 U 1 cW - 23 A 1 cW
+4 U 1 cW - 22 A 1 cW
+5 A 1 cW - 20 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+8 C 1 cW - 17 G 1 cW
+9 C 1 cW - 16 G 1 cW
+10 U 1 cW - 15 A 1 cW
+Archivo: sup.1.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+4 U 1 cW - 22 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+8 C 1 cW - 17 G 1 cW
+9 C 1 cW - 16 G 1 cW
+10 U 1 cW - 15 A 1 cW
+Archivo: sup.2.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+3 U 1 cW - 23 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+9 C 1 cW - 16 G 1 cW
+Archivo: sup.3.pdb
+0 G 1 cW - 26 C 1 cW
+1 G 1 cW - 25 C 1 cW
+2 U 1 cW - 24 A 1 cW
+5 A 1 cW - 20 A 1 cW
+6 U 1 cW - 19 A 1 cW
+7 A 1 cW - 18 U 1 cW
+8 C 1 cW - 17 G 1 cW
+Archivo: sup.4.pdb
+2 U 1 cW - 25 C 1 cW
+3 U 1 cW - 24 A 1 cW
+4 U 1 cW - 23 A 1 cW
+6 U 1 cW - 19 A 1 cW

@@ -1,0 +1,103 @@
+Archivo: 3dRNA_SL1.pred1.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+4 A 2 tW - 19 A 2 tS
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+Archivo: 3dRNA_SL1.pred10.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+Archivo: 3dRNA_SL1.pred2.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+Archivo: 3dRNA_SL1.pred3.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+10 U 2 tW - 13 C 2 tW
+Archivo: 3dRNA_SL1.pred4.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+10 U 2 tS - 13 C 2 tW
+Archivo: 3dRNA_SL1.pred5.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+Archivo: 3dRNA_SL1.pred6.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+Archivo: 3dRNA_SL1.pred7.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+Archivo: 3dRNA_SL1.pred8.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW
+Archivo: 3dRNA_SL1.pred9.min.pdb
+0 G 1 cW - 24 C 1 cW
+1 U 1 cW - 23 A 1 cW
+2 U 1 cW - 22 A 1 cW
+3 U 1 cW - 21 A 1 cW
+5 U 1 cW - 18 A 1 cW
+6 A 1 cW - 17 U 1 cW
+7 C 1 cW - 16 G 1 cW
+8 C 1 cW - 15 G 1 cW
+9 U 1 cW - 14 A 1 cW

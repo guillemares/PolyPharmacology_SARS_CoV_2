@@ -1,0 +1,5 @@
+./model1.pdb
+./model2.pdb
+./model3.pdb
+./model4.pdb
+./model5.pdb

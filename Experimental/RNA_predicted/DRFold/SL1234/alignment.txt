@@ -1,0 +1,29 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 50, RMSD=   3.63, Seq_ID=n_identical/n_aligned= 0.944
+Average TM-score= 0.29804 (normalized by length of shorter structure: L=121, d0=4.09)
+Average TM-score= 0.29804 (normalized by length of longer structure: L=121, d0=4.09)
+Average TM-score= 0.29804 (normalized by average L=121.00 and d0=4.09)
+In the following, seqID=n_identical/L.
+
+>./DPR.pdb:A	L=121	d0=4.09	seqID=0.413	TM-score=0.33073	*
+-----------------------------------------------------------------------------------------------------------ggu---------uuauac---cuuc-------------------------------------------------------------------------------------------------------c-------------------------------------------cagguaacaa--------acca--------------------------------accaacuuucgaucucuugu-agaucug-uucucuaaa-cga---acu------u-ua------------------------------------------------------aaa-ucuguguggcugucac--ucggcugcaugcuuagugcacucacgcag
+>./DPR_0.pdb:A	L=121	d0=4.09	seqID=0.395	TM-score=0.29831
+------------------------------------------------------------------------------------gguuuau--------------------------------accuu-----------------------------------------------------------------------------------------------------------cccagguaacaaaccaaccaacuuucgaucucuuguagaucugu--------ucucuaaacg-------------------------------------------------------------------------aa-cuu----u-----a----------------------------------------------------------aaa-ucuguguggcugucac--ucggcugcaugcuuagugcacucacgcag
+>./DPR_1.pdb:A	L=121	d0=4.09	seqID=0.404	TM-score=0.32933
+--------------------------------------------------------------------------------------------gguuuauaccuuccc-----------------------agguaacaaaccaaccaa--------------------cuuucg----aucucuugua----------gaucug--------------------u---ucucuaa--------------------------------------------------------------------------------------------------------------------------------------acg--a----ac------uuua------------------------------------------------------aaa-ucuguguggcugucac--ucggcugcaugcuuagugcacucacgcag
+>./DPR_2.pdb:A	L=121	d0=4.09	seqID=0.332	TM-score=0.22761
+gguuuauaccuucccagguaacaaaccaaccaacuuucgaucucuuguagaucuguucucuaaacgaacuuua---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------aaau--------------------------------------------------------------c-u-guguggcugucacuc--ggcugcaugcuuagugcacucacgcag
+>./DPR_3.pdb:A	L=121	d0=4.09	seqID=0.398	TM-score=0.30952
+----------------------------------------------------------------------------------gg--------------------------------------------------------------uuuauaccuucccagguaacaaac-ca-acca-----------------------acuuucgaucucuuguagaucuguucucuaaa-c--------------------------------------------------------------------------------------------------------------------------------------gaa---cuu-----------ua------------------------------------------------------aaa-ucuguguggcugucac--ucggcugcaugcuuagugcacucacgcag
+>./DPR_4.pdb:A	L=121	d0=4.09	seqID=0.405	TM-score=0.30324
+-------------------------------------------------------------------------------------------g-----------------guuuauaccu-----------------------------------------------------ucc------------cagguaacaaa-----------------------------------------------------------------------------------------------------ccaaccaacuuucgaucucuuguagaucuguucu------------------cuaaac---ga-----------------ac------uuua------------------------------------------------------aaa-ucuguguggcugucac--ucggcugcaugcuuagugcacucacgcag
+>./DPR_5.pdb:A	L=121	d0=4.09	seqID=0.383	TM-score=0.28756
+-------------------------------------------------------------------------gguuuauac--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------cuucccag---guaacaaaccaaccaacuuucgaucucuuguagaucuguucucuaaacgaacuuuaaaau-cuguguggcugucac--ucggcugcaugcuuagugcacucacgcag
+
+#Total CPU time is  0.22 seconds

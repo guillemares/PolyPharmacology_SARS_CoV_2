@@ -1,0 +1,35 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 17, RMSD=   3.17, Seq_ID=n_identical/n_aligned= 1.007
+Average TM-score= 0.29860 (normalized by length of shorter structure: L=25, d0=0.70)
+Average TM-score= 0.29860 (normalized by length of longer structure: L=25, d0=0.70)
+Average TM-score= 0.29860 (normalized by average L=25.00 and d0=0.70)
+In the following, seqID=n_identical/L.
+
+>./3dRNA_SL1.pred1.min.pdb:_	L=25	d0=0.70	seqID=0.720	TM-score=0.25216
+---------guu-uauacc----uucccagguaa--------c--a--aa-c-
+>./3dRNA_SL1.pred10.min.pdb:_	L=25	d0=0.70	seqID=0.587	TM-score=0.10842
+----------guuuauaccuucc--ca--ggua-a-------c-----aaac-
+>./3dRNA_SL1.pred2.min.pdb:_	L=25	d0=0.70	seqID=0.764	TM-score=0.37338
+----------guuuauacc----uucccaggua-a-------c-----aaac-
+>./3dRNA_SL1.pred3.min.pdb:_	L=25	d0=0.70	seqID=0.733	TM-score=0.33711
+---------guu-uauacc----uucccaggua-a-------c--a--aac--
+>./3dRNA_SL1.pred4.min.pdb:_	L=25	d0=0.70	seqID=0.627	TM-score=0.28530
+--gu-uu-------auacc----uucccaggua-acaa-----ac--------
+>./3dRNA_SL1.pred5.min.pdb:_	L=25	d0=0.70	seqID=0.720	TM-score=0.29350
+----------guuuauacc----uucccaggua-a-------ca------aac
+>./3dRNA_SL1.pred6.min.pdb:_	L=25	d0=0.70	seqID=0.667	TM-score=0.35937
+----gu-uu-----auacc----uucccaggua-a---ca-----aac-----
+>./3dRNA_SL1.pred7.min.pdb:_	L=25	d0=0.70	seqID=0.596	TM-score=0.27076
+gu--u-u-------auacc----uucccagguaac---aaac-----------
+>./3dRNA_SL1.pred8.min.pdb:_	L=25	d0=0.70	seqID=0.667	TM-score=0.31493
+----gu-uu-----auacc----uucccaggua-a---ca-----aac-----
+>./3dRNA_SL1.pred9.min.pdb:_	L=25	d0=0.70	seqID=0.764	TM-score=0.39106	*
+----------guuuauacc----uucccaggua-a-------c-----aaac-
+
+#Total CPU time is  0.05 seconds

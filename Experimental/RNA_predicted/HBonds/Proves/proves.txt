@@ -1,0 +1,25 @@
+Archivo: 1ajf.pdb
+0 G 1 cW - 17 C 1 cW
+1 A 1 cW - 16 U 1 cW
+2 C 1 cW - 15 G 1 cW
+3 A 1 cW - 14 U 1 cW
+4 G 1 cW - 13 U 1 cW
+5 G 1 cW - 12 U 1 cW
+6 G 1 cW - 11 C 1 cW
+7 G 2 tW - 10 A 2 tH
+Archivo: 1c0o.pdb
+0 G 1 cW - 13 C 1 cW
+1 G 1 cW - 12 C 1 cW
+2 G 1 cW - 11 U 1 cW
+3 U 1 cW - 10 G 1 cW
+4 C 1 cW - 9 G 1 cW
+Archivo: 1eka.pdb
+0 G 1 cW - 15 C 1 cW
+1 A 1 cW - 14 U 1 cW
+2 G 1 cW - 13 C 1 cW
+3 U 1 cW - 12 G 1 cW
+4 G 1 cW - 11 U 1 cW
+5 C 1 cW - 10 G 1 cW
+6 U 1 cW - 9 A 1 cW
+7 C 1 cW - 8 G 1 cW
+Archivo: 6l0y.pdb

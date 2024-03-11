@@ -1,0 +1,35 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 51, RMSD=   5.20, Seq_ID=n_identical/n_aligned= 0.599
+Average TM-score= 0.22761 (normalized by length of shorter structure: L=121, d0=4.09)
+Average TM-score= 0.22761 (normalized by length of longer structure: L=121, d0=4.09)
+Average TM-score= 0.22761 (normalized by average L=121.00 and d0=4.09)
+In the following, seqID=n_identical/L.
+
+>./SL1234_3dRNA.pred1.min.pdb:_	L=121	d0=4.09	seqID=0.111	TM-score=0.16469
+-g-gu-------------------------------------------u------------uauac-c-uuc-cca----------------------gg---u-aa-ca--aa---c------------------c--aa-c-------------------------c----------aacu------------u-u--c-----------------------gaucucuuguag--------au-------------------------------------cu-guu---cucuaaa------c---------------g----------------------------------aa--------------------c------uuu-----aaaaucugu-gu-gg-c-ugucacuc--ggcu-gcau-g------------c-uu----agugcacucacg-ca-g--
+>./SL1234_3dRNA.pred10.min.pdb:_	L=121	d0=4.09	seqID=0.245	TM-score=0.21457
+--g----------------------------------------------------------gu-------------uuauac------cuuccc-----a--g-g--------------ua--aca-----------aac--ca-acc-------------------------------------------------------------------------------------------------------aa-cuuucgaucucuuguagauc------------------------------------------------------------uguucucuaaacgaacu----u-----------------------u-a--a-------a-aucu-guguggcug-uc-a-cuc--g-g-c-u---g-c--au---------g--c--uuagugc-a-cucacgcag-
+>./SL1234_3dRNA.pred2.min.pdb:_	L=121	d0=4.09	seqID=0.226	TM-score=0.21642
+---gg-------------------------------------------u-u----------uauaccuucc--ca-----------------------gg---u-aaca---aa----c-------------------c-----------------------------------aaccaacu-u-ucga--uc-ucuugu----------------------------------------agau-c-------------------------------------ug----uucucuaaa-------cg--------------a-------------------------------acu-----------------------uu-----------aaaaucugug-ug-gc-uguc-acu--cgg-c--u--g-c-au---------gcu-----uagugcacucacg-c-ag-
+>./SL1234_3dRNA.pred3.min.pdb:_	L=121	d0=4.09	seqID=0.125	TM-score=0.20214
+g--------guuuauaccuucccagguaacaaaccaaccaac---------------------------------------------------------------------------------------------------uuu-cgaucucuuguagaucuguucuc---------uaa---a------------------------------------------------------------------cgaa------------------------------------------------------------------------------cu------------------uua-----------------------a-a------a------ucug-uguggcugu-ca-c--u--------------------cgg--cugca--ugcuuagugc---acucacgcag
+>./SL1234_3dRNA.pred4.min.pdb:_	L=121	d0=4.09	seqID=0.322	TM-score=0.25397
+---------------------------------------------gguuu---------------------------a----uaccuucc-------------ca---------------g-guaaca-----aac--c--a---------------------------------a-----c-c----------------------------------------------------------aa-c--------------------------------------u------u-------------ucgau-----cucuug-ua---------------------------gau-cuguu-cucuaaacgaacuuuaa--------------aa-ucu-guguggcug-uc-a-cu--------------------cgg--cugca--ugcuuagugc-a-cucacgcag-
+>./SL1234_3dRNA.pred5.min.pdb:_	L=121	d0=4.09	seqID=0.226	TM-score=0.17319
+---------------------------------------------gguu---------------------------ua-u--ac-cuucc--------------c--------------agg-uaaca------a---ac-c-aa----------------ccaa------------------------cu-----------------------------------u---------------------------------------------------------------------u-cg-------aucucuug-----u--aga-----------------------u-----cuguucucu-aaacga-acu----u-uaa--------aa--ucuguguggcugu-c-a-c-uc-g-g-c--ugcau------gcuu------------agugc-a-cuca-cgcag
+>./SL1234_3dRNA.pred6.min.pdb:_	L=121	d0=4.09	seqID=0.350	TM-score=0.27723
+------------------------------------------g---guu-u----------auacc------uuc-----------------------c-cagg-ua-ac--aa---ac---------------caac-----------------------------------caa---cu----uucg-aucucu-ugu----------------------------------------agau---------------------------------------cugu--u-c-------------uc-----------------------u--------------------aaacg-----------------------a-a--cu--uuaa-aaucu-guguggcug-uc-a-cu--------------------cgg--cugca--ugcuuagugc-a-cucacgcag-
+>./SL1234_3dRNA.pred7.min.pdb:_	L=121	d0=4.09	seqID=0.283	TM-score=0.23901
+-----gguuu-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------auaccuucccagguaacaaacca------------accaacuuu-cgaucu----------------------cuuguagaucu----g-u--------ucucu-------------------------aaacga-----------------acuuu--------------------a------a------aa-ucu-guguggcug-uc-a-cu--------------------cgg--cugca--ugcuuagugc-a-cucacgcag-
+>./SL1234_3dRNA.pred8.min.pdb:_	L=121	d0=4.09	seqID=0.305	TM-score=0.24723
+------------------------------------------g---gu--uuauaccuucc--------------------------------------------ca-ggua-acaaac---------------caacc---a-------------------------a------c---uu----ucga--ucucu-ugu-----------------------------------------agauc-------------------------------------ug-u--ucu-------------cu--------------a------------------------------aacga----------------------ac---uu----uaaaaucu-guguggcug-uc-a-cuc--gg--------c-ugcau--------gcu-----uagugc-a-cucacgcag-
+>./SL1234_3dRNA.pred9.min.pdb:_	L=121	d0=4.09	seqID=0.331	TM-score=0.28766	*
+-------------------------------------------gguuua---------------------------ua----------------ccuuc-cc-----------------ag-g-----uaacaaac---------------------------------caaccaa-----c--uuu-cgaucu------cu----------------------u-----------gua-gauc---------------------------------------ug----u-u-------------cu---------------c---uaaac--------------------gaacu-----------------------u-u--a-------aaaucu-guguggcug-uc-a-cu--------------------cgg--cugca--ugcuuagugc-a-cucacgcag-
+
+#Total CPU time is  0.37 seconds

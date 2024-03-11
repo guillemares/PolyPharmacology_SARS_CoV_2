@@ -1,0 +1,5 @@
+./1ajf.pdb
+./1c0o.pdb
+./1eka.pdb
+./3dRNA_SL1.pred1-COPY.min.pdb
+./6l0y.pdb

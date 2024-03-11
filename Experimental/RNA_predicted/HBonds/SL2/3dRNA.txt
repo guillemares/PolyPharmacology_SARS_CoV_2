@@ -1,0 +1,53 @@
+Archivo: SL2_3dRNA.pred1.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+4 C 1 cW - 7 G 1 cW
+Archivo: SL2_3dRNA.pred10.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+4 C 2 tS - 7 G 2 tW
+Archivo: SL2_3dRNA.pred2.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+Archivo: SL2_3dRNA.pred3.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+Archivo: SL2_3dRNA.pred4.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+7 G 2 tS - 8 U 2 tW
+Archivo: SL2_3dRNA.pred5.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+Archivo: SL2_3dRNA.pred6.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+Archivo: SL2_3dRNA.pred7.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+Archivo: SL2_3dRNA.pred8.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW
+Archivo: SL2_3dRNA.pred9.min.pdb
+0 A 1 cW - 12 U 1 cW
+1 U 1 cW - 11 A 1 cW
+2 C 1 cW - 10 G 1 cW
+3 U 1 cW - 9 A 1 cW

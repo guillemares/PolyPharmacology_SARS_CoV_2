@@ -1,0 +1,15 @@
+./3dRNA_SL3.pred1.min.pdb
+./3dRNA_SL3.pred10.min.pdb
+./3dRNA_SL3.pred2.min.pdb
+./3dRNA_SL3.pred3.min.pdb
+./3dRNA_SL3.pred4.min.pdb
+./3dRNA_SL3.pred5.min.pdb
+./3dRNA_SL3.pred6.min.pdb
+./3dRNA_SL3.pred7.min.pdb
+./3dRNA_SL3.pred8.min.pdb
+./3dRNA_SL3.pred9.min.pdb
+./model1.pdb
+./model2.pdb
+./model3.pdb
+./model4.pdb
+./model5.pdb

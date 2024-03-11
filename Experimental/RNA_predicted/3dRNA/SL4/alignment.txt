@@ -1,0 +1,35 @@
+
+ ********************************************************************
+ * US-align (Version 20231222)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 24, RMSD=   2.63, Seq_ID=n_identical/n_aligned= 0.915
+Average TM-score= 0.37427 (normalized by length of shorter structure: L=44, d0=1.46)
+Average TM-score= 0.37427 (normalized by length of longer structure: L=44, d0=1.46)
+Average TM-score= 0.37427 (normalized by average L=44.00 and d0=1.46)
+In the following, seqID=n_identical/L.
+
+>./SL4_3dRNA.pred1.min.pdb:_	L=44	d0=1.46	seqID=0.563	TM-score=0.40107	*
+cuguguggc---------------------------------------u-g-u-----cacu---------------------cg---g------cugcaugcu--------uagu-gcacucacgcag
+>./SL4_3dRNA.pred10.min.pdb:_	L=44	d0=1.46	seqID=0.457	TM-score=0.36538
+cuguguggcugu-cacucg-gcugc---augc--------uuagugca------------------------------------------------------------------------cucacgcag
+>./SL4_3dRNA.pred2.min.pdb:_	L=44	d0=1.46	seqID=0.470	TM-score=0.35165
+cuguguggc---------------------------------------ug-ucacucg---gcugcau------g-----------cu------------------uag----ug--c-acucacgcag
+>./SL4_3dRNA.pred3.min.pdb:_	L=44	d0=1.46	seqID=0.492	TM-score=0.36929
+cuguguggc---------------------------------------u-gucac----------------------------u-c--ggcug--------caugcuua----gug--cacucacgcag
+>./SL4_3dRNA.pred4.min.pdb:_	L=44	d0=1.46	seqID=0.495	TM-score=0.38319
+cuguguggc---------------------------------------u-g-u------cac------ucggcu----gcau-gcu---------------------------uagugcacucacgcag
+>./SL4_3dRNA.pred5.min.pdb:_	L=44	d0=1.46	seqID=0.538	TM-score=0.37765
+cuguguggc---------------------------------------u-g-u-----cacu---------------------c-gg-c----ugca----ugc--u-----uagu-gcacucacgcag
+>./SL4_3dRNA.pred6.min.pdb:_	L=44	d0=1.46	seqID=0.480	TM-score=0.36468
+cuguguggc---------------------------------------u-g-u-c------a-------cucggcugc---augcu----------------------uagu----gc-acucacgcag
+>./SL4_3dRNA.pred7.min.pdb:_	L=44	d0=1.46	seqID=0.563	TM-score=0.38410
+cuguguggc---------------------------------------u-g-u-----cacu---------------------cg---g------cugcaugcu--------uagu-gcacucacgcag
+>./SL4_3dRNA.pred8.min.pdb:_	L=44	d0=1.46	seqID=0.472	TM-score=0.37049
+cuguguggcugucacu---cg----gcugc----a--ugcuuagugca------------------------------------------------------------------------cucacgcag
+>./SL4_3dRNA.pred9.min.pdb:_	L=44	d0=1.46	seqID=0.460	TM-score=0.37521
+cuguguggcugucacu---c-----gg---c-ugcaugcuuagu-gca------------------------------------------------------------------------cucacgcag
+
+#Total CPU time is  0.10 seconds

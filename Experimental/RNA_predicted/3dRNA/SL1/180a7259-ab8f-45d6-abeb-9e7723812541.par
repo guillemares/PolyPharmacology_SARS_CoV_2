@@ -1,0 +1,14 @@
+_jobid 180a7259-ab8f-45d6-abeb-9e7723812541
+_version 2.0.0
+_lib_version 3dRNA-Lib1
+name 3dRNA_SL1
+seq GGUUUAUACCUUCCCAGGUAACAAACC
+ss (((((.(((((....)))))..)))))
+num 10
+num_samplings 1
+_minimize yes
+_pred_ss no
+loop_building partial_bires
+_mol_type rna
+_rna_type linear
+_routine Default
