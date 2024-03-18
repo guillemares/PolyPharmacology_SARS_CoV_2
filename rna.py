@@ -2,11 +2,12 @@
 import biotite.structure.io.pdb as pdb
 import biotite.structure as struc
 from biotite.structure.error import BadStructureError
+import sys
 
 
 class RNA(object):
     """
-
+    >>> RNA(pdbfile='test/3dRNA_109.min.pdb')
     """
     def __init__(self, pdbfile, init_index=None):
         """
@@ -14,7 +15,8 @@ class RNA(object):
         """
         self.biotite_pdb = pdb.PDBFile.read(pdbfile)
         self.biotite_atom_array = pdb.get_structure(self.biotite_pdb)[0]
-        self.biotite_nucleotides = self.biotite_atom_array[struc.filter_nucleotides(self.biotite_atom_array)]
+        self.biotite_nucleotides = self.biotite_atom_array[
+            struc.filter_nucleotides(self.biotite_atom_array)]
         self._get_nucleotides()
         if init_index:
             self._reset_index(init_index)
@@ -59,7 +61,8 @@ class RNA(object):
         """
         return a list of .... where 1 is cys and 2 is trans
         """
-        self.glycosidic_bonds = struc.base_pairs_glycosidic_bond(self.biotite_nucleotides, self.basepairs)
+        self.glycosidic_bonds = struc.base_pairs_glycosidic_bond(
+            self.biotite_nucleotides, self.basepairs)
         return 0
 
     def _get_edges(self):
@@ -67,7 +70,8 @@ class RNA(object):
         return a numpy array .... wehre 0 means ... where 1 means .. 2 means ..
         """
         try:
-            self.edges = struc.base_pairs_edge(self.biotite_nucleotides, self.basepairs)
+            self.edges = struc.base_pairs_edge(
+                self.biotite_nucleotides, self.basepairs)
         except BadStructureError:
             self.edges = None
             return -1
@@ -104,15 +108,31 @@ class RNA(object):
         self._get_interactions()
         self._get_hbonds()
         self._get_hbonds_for_base_pair()
-        self.df_interactions
+        # self.df_interactions
         return 0
 
     def plot_df_interactions(self, outname):
         return 0
 
+
 if __name__ == '__main__':
-    print('hello')
-    pdbfile = '3dRNA_109.min.pdb'
-    rnaobj = RNA(pdbfile=pdbfile)
-    print(rnaobj.df_interactions)
-    rnaobj.plot_df_interactions(outname='.pdf')
+    import doctest
+    import argparse
+    parser = argparse.ArgumentParser(description='')
+    parser.add_argument('--pdb',
+                        help='',)
+    parser.add_argument('--test',
+                        help='Test the code',
+                        action='store_true')
+    args = parser.parse_args()
+
+    if args.test:
+        doctest.testmod(
+            optionflags=doctest.ELLIPSIS | doctest.REPORT_ONLY_FIRST_FAILURE)
+        sys.exit()
+
+    rnaobj = RNA(pdbfile=args.pdb)
+
+    # print(rnaobj.df_interactions)
+
+    # rnaobj.plot_df_interactions(outname='.pdf')
