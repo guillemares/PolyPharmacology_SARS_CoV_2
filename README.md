@@ -1,4 +1,4 @@
-# PolyPharmacology_SARS-CoV-2
+# 3D-RNAlysis
 
 This repository offers a series of Python scripts designed to analyze the three-dimensional structure of multiple RNA molecules.
 
