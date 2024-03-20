@@ -5,6 +5,10 @@ from biotite.structure.error import BadStructureError
 import sys
 import numpy as np
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import glob
+import os
 
 
 class RNA(object):
@@ -25,15 +29,35 @@ class RNA(object):
         self._get_basepairs()
         self._get_glycosidic_bonds()
         self._get_edges()
-        self.get_simple_df()
-        self.get_full_df()
-
+        self._get_interactions()
+        self._get_base_pairs_interactions()
+        # self._get_hbonds()
+        # self._get_hbonds_for_base_pair()
+        self.get_simple_df() # This function will be used only when the user types --output = 'Simple'
+        # self.get_full_df() # This function will be used only when the user types --output = 'Complex'
+        # self.plot_df_interactions() out of the loop, it has to be used after storing all DataFrames in global_df
 
     def _reset_index(self, init_index):
         """
+        This function resets the index of the nucleotides to start from 1, insted of
+        the original index in the pdb file.
+
+        Parameters:
+        -----------
+        biotite_nucleotides: list
+            Contains the nucleotides in the structure.
+
+        Returns:
+        -----------
+        biotite_nucleotides: list
+            Contains the nucleotides in the structure.
 
         """
-        # self.nucleotides_id =
+        new_index = 1
+        for i in range(len(self.biotite_nucleotides)):
+            self.biotite_nucleotides[i] = new_index
+            new_index += 1
+
         return 0
 
     def _get_nucleotides(self):
@@ -148,6 +172,7 @@ class RNA(object):
         except BadStructureError:
             # self.edges = None
             self.edges = np.zeros(self.basepairs.shape, dtype=int)
+            # return pd.DataFrame()
             return -1
         return 0
 
@@ -455,7 +480,6 @@ class RNA(object):
         return 0
 
 
-
     def get_main(self):
         """
 
@@ -463,16 +487,81 @@ class RNA(object):
         self._get_interactions()
         self._get_hbonds()
         self._get_hbonds_for_base_pair()
-        # self.df_interactions
+        self._get_base_pairs_interactions()
+        self.get_simple_df()
+        self.get_full_df()
+        self.plot_df_interactions() # !!!!
+
         return 0
 
-    # This function will need a flag i order to be used.
+    def store_df(self):
+        """
+        """
+        global_df = pd.concat([set.full_df for set in self.sets])
+        self.global_df = global_df
+        
+        return 0
+
     # As it needs multiple files to be created, it should be
     # used when the user types --dir = 'path/to/dir', where
     # all pdb files will be read.
-    def plot_df_interactions(self, outname):
+
+    def plot_df_interactions(self, indir, outdir):
+        """
+        """
+        files = glob.glob(os.path.join(indir, '*.pdb'))
+        global_df = pd.DataFrame
+
+        for file in files:
+            rnaobj = RNA(pdbfile=file)
+            rnaobj.get_main() # Check whether it is correctly implemented
+            global_df = pd.concat([global_df, rnaobj.full_df])
+
+        pair_df = []
+        pair_df_index = {}
+
+        for index, row in global_df.iterrows():
+            bp_label = f"{row['BaseName1']}{row['BaseId1']}-{row['BaseName2']}{row['BaseId2']}"
+            if bp_label not in pair_df_index:
+                pair_df_index[bp_label] = len(pair_df)
+                pair_df.append(bp_label)
+ 
+        sns.set_theme(style="whitegrid")
+        plt.figure(figsize=(30, 18))
+        x = np.arange(len(pair_df))
+        width = 0.35
+        unique_interactions = global_df['InteractionType'].unique()
+        color_palette = sns.color_palette("tab10", len(unique_interactions))
+
+        interaction_counts_per_pair = []
+
+        for pair in pair_df:
+            interaction_counts = {interaction: 0 for interaction in unique_interactions}
+            pair_interactions = global_df[global_df['BaseName1'] + global_df['BaseId1'].astype(str) + global_df['BaseName2'] + global_df['BaseId2'].astype(str) == pair]['InteractionType']
+
+            for interaction in pair_interactions:
+                interaction_counts[interaction] += 1
+
+            interaction_counts_per_pair.append(list(interaction_counts.values()))
+        
+        interaction_counts_per_pair = np.array(interaction_counts_per_pair)
+        for i, interaction in enumerate(unique_interactions):
+            plt.bar(x, interaction_counts_per_pair[:, i], width, label=interaction, color=color_palette[i])
+        
+        plt.xlabel('Base Pair', fontsize=22)
+        plt.ylabel('Count', fontsize=22)
+        plt.title('Number of interactions per base pair', fontsize=26)
+        plt.xticks(x, pair_df, fontsize=14, rotation=45)
+        plt.yticks(fontsize=14)
+        plt.legend(fontsize=16)
+        plt.savefig(os.path.join(outdir, 'interactions.pdf'))
+        plt.show()
+
         return 0
 
+# Args to be implemented:
+# --dir: path to the directory containing the pdb files
+# --output: Simple or Complex
 
 if __name__ == '__main__':
     import doctest
