@@ -475,6 +475,11 @@ class RNA(object):
             full_df.append(data_full_df)
 
         full_df = pd.DataFrame(full_df)
+        column_order = ['BaseId1', 'BaseName1', 'BaseId2', 'BaseName2']
+        hbond_columns = [column for column in full_df.columns if column.startswith('HBond')]
+        interaction_column = ['InteractionType']
+        new_columns = column_order + interaction_column + hbond_columns
+        full_df = full_df[new_columns]
         self.full_df = full_df
 
         return 0
@@ -497,7 +502,9 @@ class RNA(object):
     def store_df(self):
         """
         """
+
         global_df = pd.concat([set.full_df for set in self.sets])
+        
         self.global_df = global_df
         
         return 0
@@ -527,27 +534,28 @@ class RNA(object):
                 pair_df.append(bp_label)
  
         sns.set_theme(style="whitegrid")
-        plt.figure(figsize=(30, 18))
+        plt.figure(figsize=(28, 15))
         x = np.arange(len(pair_df))
         width = 0.35
         unique_interactions = global_df['InteractionType'].unique()
         color_palette = sns.color_palette("tab10", len(unique_interactions))
 
-        interaction_counts_per_pair = []
+        total_interactions_per_pair = np.zeros((len(pair_df), len(unique_interactions)))
+        for i, pair in enumerate(pair_df):
+            total_interactions = []
+            for j, interaction in enumerate(unique_interactions):
+                count = global_df[(global_df['BaseName1'] + global_df['BaseId1'].astype(str) + "-" + global_df['BaseName2'] + global_df['BaseId2'].astype(str) == pair) &
+                                   (global_df['InteractionType'] == interaction)].shape[0]
+                total_interactions_per_pair[i, j] = count
 
-        for pair in pair_df:
-            interaction_counts = {interaction: 0 for interaction in unique_interactions}
-            pair_interactions = global_df[global_df['BaseName1'] + global_df['BaseId1'].astype(str) + global_df['BaseName2'] + global_df['BaseId2'].astype(str) == pair]['InteractionType']
+        bottom = None
+        for i, interactin in enumerate(unique_interactions):
+            plt.bar(x, total_interactions_per_pair[:, i], width, label=interaction, bottom=bottom, color=color_palette[i])
+            if bottom is None:
+                bottom = total_interactions_per_pair[:, i]
+            else:
+                bottom += total_interactions_per_pair[:, i]
 
-            for interaction in pair_interactions:
-                interaction_counts[interaction] += 1
-
-            interaction_counts_per_pair.append(list(interaction_counts.values()))
-        
-        interaction_counts_per_pair = np.array(interaction_counts_per_pair)
-        for i, interaction in enumerate(unique_interactions):
-            plt.bar(x, interaction_counts_per_pair[:, i], width, label=interaction, color=color_palette[i])
-        
         plt.xlabel('Base Pair', fontsize=22)
         plt.ylabel('Count', fontsize=22)
         plt.title('Number of interactions per base pair', fontsize=26)
