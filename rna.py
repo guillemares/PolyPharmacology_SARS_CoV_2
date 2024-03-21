@@ -13,12 +13,23 @@ import os
 
 class RNA(object):
     """
-    >>> RNA(pdbfile='test/3dRNA_109.min.pdb')
     """
-    def __init__(self, pdbfile, init_index=None):
+    def __init__(self, pdbfile, init_index=None, test=False):
         """
+        Class for RNA structure
 
+        Input:
+        -----------
+        pdbfile: string
+            PDB file with the RNA structure
+        init_index: integer
+            If provided the nulceotide are renumbered satrting from init_index.
+            Default None (it keeps the nucleotide numbering of the PDB)
+        test: boolean
+            If True it runs a test for the class
+            Default False
         """
+        self.test = test
         self.biotite_pdb = pdb.PDBFile.read(pdbfile)
         self.biotite_atom_array = pdb.get_structure(self.biotite_pdb)[0]
         self.biotite_nucleotides = self.biotite_atom_array[
@@ -30,49 +41,40 @@ class RNA(object):
         self._get_glycosidic_bonds()
         self._get_edges()
         self._get_interactions()
-        self._get_base_pairs_interactions()
-        # self._get_hbonds()
-        # self._get_hbonds_for_base_pair()
+        # self._get_hbonds_for_basepair()
         self.get_simple_df() # This function will be used only when the user types --output = 'Simple'
         # self.get_full_df() # This function will be used only when the user types --output = 'Complex'
         # self.plot_df_interactions() out of the loop, it has to be used after storing all DataFrames in global_df
 
     def _reset_index(self, init_index):
         """
-        This function resets the index of the nucleotides to start from 1, insted of
-        the original index in the pdb file.
+        This function resets the index of the nucleotides to start from
+        init_index, insted of the original index in the pdb file.
 
-        Parameters:
+        Input variables:
         -----------
-        biotite_nucleotides: list
-            Contains the nucleotides in the structure.
-
-        Returns:
-        -----------
-        biotite_nucleotides: list
-            Contains the nucleotides in the structure.
-
+        init_index: integer
+            Index used to reset the first nucleotide index.
         """
-        new_index = 1
+        new_index = init_index
         for i in range(len(self.biotite_nucleotides)):
             self.biotite_nucleotides[i] = new_index
             new_index += 1
-
         return 0
 
     def _get_nucleotides(self):
         """
-        Parameters:
-        -----------
-        biotite_atom_array: AtomArray
-            Contains the structure of a nucleic acid.
+        Computes a list of nucleotide ids and a list of nucleotide types which
+        are stored as attributes, nucleotides_id and nucleotides_names,
+        respectively.
 
         Returns:
-        -----------
-        nucleotides_id: list
-            Contains the nucleotides numbers (id) in the structure.
-        nucleotides_names: list
-            Contains the nucleotides names in the structure.
+            nucleotides_id: list (length number of nucleotides)
+            nucleotides_names: list (length number of nucleotides)
+
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj._get_nucleotides()
+        ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], ['G', 'A', 'U', 'C', 'U', 'C', 'U', 'U', 'G', 'U', 'A', 'G', 'A', 'U', 'C'])
         """
         self.nucleotides_id = []
         self.nucleotides_names = []
@@ -85,120 +87,117 @@ class RNA(object):
                 self.nucleotides_names.append(map_nucleotide)
             else:
                 self.nucleotides_names.append(map_nucleotide.lower())
+        self.length = len(self.nucleotides_id)
+        if self.test:
+            return self.nucleotides_id, self.nucleotides_names
+        else:
+            return 0
 
     def _get_basepairs(self):
         """
-        Parameters:
-        -----------
-        biotite_atom_array: AtomArray
-            Contains the structure of a nucleic acid.
+        Computes a np.array of basepairs containing the index of the
+        interacting nucleotides per basepair which is stored as an attribute
+        (basepairs).
 
-        Returns:
-        -----------
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure. Each row contains the
-            residue indices of a base pair.
+        Return:
+            basepairs: np array, shape=(N,2) where N is the number of
+                       basepairs
 
-            Example:
-            [[1, 8], [2, 7], [3, 6], [4, 5]]
-
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj._get_basepairs()
+        (5, 2)
         """
         self.basepairs_atoms = struc.base_pairs(self.biotite_nucleotides)   # Gives atoms index. It just returns one index per base pair, so it is not useful
-        self.basepairs = struc.get_residue_positions(                       # for hydrogen bonding analysis, only for base pairing.
-            self.biotite_nucleotides, self.basepairs_atoms.flatten()
-        ).reshape(self.basepairs_atoms.shape)                               # Gives residue index
-        return 0
+        self.basepairs = struc.get_residue_positions(
+            self.biotite_nucleotides, self.basepairs_atoms.flatten()).reshape(
+            self.basepairs_atoms.shape)
+        if self.test:
+            return self.basepairs.shape
+        else:
+            return 0
 
     def _get_glycosidic_bonds(self):
         """
-        Parameters:
-        -----------
-        biotite_atom_array: AtomArray
-            Contains the structure of a nucleic acid.
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure.
+        Computes the glycosidic interactions between the nitrogenous base and
+        the sugar (cis or trans) for each nucleotide.
 
         Returns:
         -----------
-        glycosidic_bonds: numpy array, shape=(N,)
-            Contains the glycosidic bonds in the structure. Each element.
-            contains the glycosidic bond of a base pair with the shape (N,).
+        glycosidic_bonds: np array, shape=(N,)
 
             If the value of the orientation is:
             - 0: the glycosidic bond is in unknown conformation (INVALID).
             - 1: the glycosidic bond is in trans conformation.
             - 2: the glycosidic bond is in cis conformation.
 
-            Example:
-            [1, 2, 1, 2]
-
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj._get_glycosidic_bonds()
+        [1, 1, 1, 1, 1]
         """
         self.glycosidic_bonds = struc.base_pairs_glycosidic_bond(
-            self.biotite_nucleotides, self.basepairs)
-        return 0
+            self.biotite_nucleotides, self.basepairs_atoms)
+        if self.test:
+            return list(self.glycosidic_bonds)
+        else:
+            return 0
 
     def _get_edges(self):
         """
-        Parameters:
-        -----------
-        atom_array: AtomArray
-            Contains the structure of a nucleic acid.
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure.
+        Computes the interacting edge of each nucleotide in a basepair.
 
         Returns:
         -----------
-        edges: numpy array, shape=(N, 2)
-            Contains the edges in the structure. 
+        edges: np array, shape=(N, 2)
 
             If the value of the edge is:
-            - 0: the nucleotide is not canonical or not HBonds present (INVALID).
+            - 0: the nucleotide is not canonical or not HBonds present
+                (INVALID).
             - 1: the nucleotide interacts with Watson-Crick edge.
             - 2: the nucleotide interacts with Hoogsteen edge.
             - 3: the nucleotide interacts with Sugar edge.
-
-            Example:
-            [[1, 1], [2, 2], [3, 2], [1, 3]]
 
         Errors:
         -----------
         BadStructureError:
             If any edge is detected, the function raises an error.
             To avoid this, the function will return -1.
+
+
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj._get_edges()
+        (5, 2)
         """
         try:
-            self.edges = struc.base_pairs_edge(
-                self.biotite_nucleotides, self.basepairs)
+            self.edges = struc.base_pairs_edge(self.biotite_nucleotides,
+                                               self.basepairs_atoms)
         except BadStructureError:
-            # self.edges = None
             self.edges = np.zeros(self.basepairs.shape, dtype=int)
-            # return pd.DataFrame()
             return -1
-        return 0
+        if self.test:
+            return self.edges.shape
+        else:
+            return 0
 
     def _get_interactions(self):
         """
-        Parameters:
-        -----------
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure.
-        edges: numpy array, shape=(N, 2)
-            Contains the edges in the structure.
-        glycosidic_bonds: numpy array, shape=(N,)
-            Contains the glycosidic bonds in the structure.
+        Assing to each nucleotide an specific type of RNA interaction
 
         Returns:
         -----------
-        interactions: list of str
-            Contains the interactions between the base pairs in the structure.
+        interactions: list of length number of nucleotides
+
             Example:
             ['cW', 'tW', 'cS', 'tS']
 
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj._get_interactions()
+        ['cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW']
         """
 
         interactions = []
-        for bases, edges, orientation in zip(
-            self.basepairs, self.edges, self.glycosidic_bonds):
+        for bases, edges, orientation in zip(self.basepairs,
+                                             self.edges,
+                                             self.glycosidic_bonds):
             for base, edge in zip(bases, edges):
                 if orientation == 1:
                     interaction = "c"
@@ -215,51 +214,48 @@ class RNA(object):
                 elif edge == 0:
                     interaction = "X"
                 interactions.append(interaction)
-        
         self.interactions = interactions
-        return 0
-    
-    def _get_base_pairs_interactions(self):
-        """
-        
-        Adjusts the interactions between the base pairs in the structure with the
-        correct nucleotides names (and correct the index to start from 1 instead of 0).
+        if self.test:
+            return self.interactions
+        else:
+            return 0
 
-        Parameters:
-        -----------
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure.
-        interactions: list
-            Contains the interactions between the base pairs in the structure.
-        nucleotides_names: list
-            Contains the nucleotides names in the structure.
+        # def _get_basepairs_interactions(self):
+        #     """
+        #     Assign to each basepair a 2 dimensional np array where each
+        #     element of it containts the following information:
+        #     ['nucleotide1 id', 'nucleotide1 name', 'interaction type']
 
-        Returns:
-        -----------
-        base_pairs_interactions: list of list
-            Contains the interactions between the base pairs in the structure
-            with the nucleotides names.
-            Each element contains the base pair index, the nucleotide name and the
-            interaction. 
-            Example:
-            [[[1, 'A', 'cW'], [2, 'U', 'tW']], [[3, 'G', 'cS'], [4, 'C', 'tS']]]
+        #     Returns:
+        #     -----------
+        #     basepairs_interactions: np array shape (N,2,3)
 
-        """
-        base_pairs_interactions = []
-        for i in range(self.basepairs.shape[0]):
-            edge1 = self.interactions[i*2]
-            edge2 = self.interactions[i*2+1]
+        #     Example:
+        #     [[[1, 'A', 'cW'], [2, 'U', 'tW']], [[3, 'G', 'cS'], [4, 'C', 'tS']]]
 
-            base_pairs1 = self.basepairs[i, 0] + 1
-            base_pairs2 = self.basepairs[i, 1] + 1
+        #     >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        #     >>> rnaobj._get_basepairs_interactions()
+        #     (5, 2, 3)
+        #     """
+        #     basepairs_interactions = []
+        #     for i in range(self.basepairs.shape[0]):
+        #         edge1 = self.interactions[i*2]
+        #         edge2 = self.interactions[i*2+1]
 
-            base_pairs_interactions.append(
-                [base_pairs1, self.nucleotides_names[self.basepairs[i, 0]], edge1],
-                [base_pairs2, self.nucleotides_names[self.basepairs[i, 1]], edge2]
-            )
+        #         basepairs1 = self.basepairs[i, 0] + 1
+        #         basepairs2 = self.basepairs[i, 1] + 1
 
-        self.base_pairs_interactions = base_pairs_interactions
-        return 0
+        #         basepairs_interactions.append(
+        #             [[basepairs1, self.nucleotides_names[self.basepairs[i, 0]],
+        #              edge1],
+        #              [basepairs2, self.nucleotides_names[self.basepairs[i, 1]],
+        #              edge2]])
+
+        #     self.basepairs_interactions = np.asarray(basepairs_interactions)
+        #     if self.test:
+        #         return self.basepairs_interactions.shape
+        #     else:
+        #         return 0
 
     def _get_hbonds(self):
         """
@@ -284,7 +280,7 @@ class RNA(object):
         self.hbonds = struc.hbond(self.biotite_nucleotides)
         return 0
 
-    def _get_hbonds_for_base_pair(self):
+    def _get_hbonds_for_basepair(self):
         """
         Associate the hydrogen bonds with the base pairs in the structure,
         using the index of the atoms (Donor, Acceptor and Hydrogen).
@@ -298,10 +294,10 @@ class RNA(object):
             columns representing the Donor, Acceptor and Hydrogen atom.
         basepairs: numpy array, shape=(N, 2)
             Contains the base pairs in the structure.
-        
+
         Returns:
         -----------
-        hbonds_for_base_pair: dict
+        hbonds_for_basepair: dict
             Contains the hydrogen bonds for each base pair in the structure.
             The key is a tuple with the base pair, and the value is a list
             with the atoms involved in the hydrogen bond (Donor, Acceptor).
@@ -311,7 +307,7 @@ class RNA(object):
             {((1, 'G', 'cW'), (18, 'C', 'cW')): [('O6', 'N4'), ('N2', 'O2'), ('N1', 'N3')],
              ((2, 'A', 'cW'), (17, 'U', 'cW')): [('N1', 'N3'), ('N6', 'O4')]}
         """
-        self.hbonds_for_base_pair = {}
+        self.hbonds_for_basepair = {}
         for hbond in self.hbonds:
             donor_index = hbond[0]
             hydrogen_index = hbond[1]
@@ -321,25 +317,25 @@ class RNA(object):
             hydrogen_nucleotide = self.biotite_nucleotides[hydrogen_index].res_id
             acceptor_nucleotide = self.biotite_nucleotides[acceptor_index].res_id
 
-            for base_pair in self.basepairs:
-                if (donor_nucleotide in base_pair[0] and acceptor_nucleotide in base_pair[1]) \
-                or (donor_nucleotide in base_pair[1] and acceptor_nucleotide in base_pair[0]):
-                    base_pair_key = (tuple(base_pair[0]), tuple(base_pair[1]))
-                    if base_pair_key not in self.hbonds_for_base_pair:
-                        self.hbonds_for_base_pair[base_pair_key] = []
+            for basepair in self.basepairs:
+                if (donor_nucleotide in basepair[0] and acceptor_nucleotide in basepair[1]) \
+                or (donor_nucleotide in basepair[1] and acceptor_nucleotide in basepair[0]):
+                    basepair_key = (tuple(basepair[0]), tuple(basepair[1]))
+                    if basepair_key not in self.hbonds_for_basepair:
+                        self.hbonds_for_basepair[basepair_key] = []
                     
                     donor_atom_name = self.nucleotides_names[donor_nucleotide].atom_name        # Returns the donor atom type
                     hydrogen_atom_name = self.nucleotides_names[hydrogen_nucleotide].atom_name  # Returns the hydrogen atom type
                     acceptor_atom_name = self.nucleotides_names[acceptor_nucleotide].atom_name  # Returns the acceptor atom type
 
-                    if donor_nucleotide == base_pair[0][0]:
+                    if donor_nucleotide == basepair[0][0]:
                         base1_atom = donor_atom_name
                         base2_atom = acceptor_atom_name
                     else:
                         base1_atom = acceptor_atom_name
                         base2_atom = donor_atom_name
 
-                    self.hbonds_for_base_pair[base_pair_key].append([base1_atom, base2_atom])
+                    self.hbonds_for_basepair[basepair_key].append([base1_atom, base2_atom])
 
         return 0
 
@@ -377,14 +373,14 @@ class RNA(object):
         """
         simple_df = []
 
-        for base_pair in self.basepairs:
-            base1_id = base_pair[0][0]
-            base1_name = base_pair[0][1]
-            interaction_type1 = base_pair[0][2]
+        for basepair in self.basepairs:
+            base1_id = basepair[0][0]
+            base1_name = basepair[0][1]
+            interaction_type1 = basepair[0][2]
 
-            base2_id = base_pair[1][0]
-            base2_name = base_pair[1][1]
-            interaction_type2 = base_pair[1][2]
+            base2_id = basepair[1][0]
+            base2_name = basepair[1][1]
+            interaction_type2 = basepair[1][2]
             
             simple_df.append({
                 'BaseId1': base1_id,
@@ -410,7 +406,7 @@ class RNA(object):
             Contains the base pairs in the structure.
         nucleotides_names: list
             Contains the nucleotides names in the structure.
-        hbonds_for_base_pair: dict
+        hbonds_for_basepair: dict
             Contains the hydrogen bonds for each base pair in the structure.
             The key is a tuple with the base pair, and the value is a list
             with the atoms involved in the hydrogen bond (Donor, Acceptor).
@@ -421,23 +417,26 @@ class RNA(object):
         full_df: pandas dataframe
             Contains the base pairs, the interaction type and the hydrogen bonds.
             Example:
-            BaseId1  BaseName1  BaseId2  BaseName2  Interaction Type  HBond1  HBond2  HBond3  WobbleGU?
-            1        G          18       C          cWcW              O6-N4   N2-O2   N1-N3   False
-            2        A          17       U          tHcS              N1-N3   N6-O4           True
-            3        U          16       A          tHcW              N3-O2                   False
+            BaseId1  BaseName1  BaseId2  BaseName2  Interaction Type  HBond1  HBond2  HBond3
+            1        G          18       C          cWcW              O6-N4   N2-O2   N1-N3
+            2        A          17       U          tHcS              N1-N3   N6-O4        
+            3        U          16       A          tHcW              N3-O2                
         """
+        if not hasattr(self, 'hbonds'):
+            self._get_hbonds()
 
         full_df = []
 
-        for base_pair, self.hbonds in self.hbonds_for_base_pair.items():
-            base1_id = base_pair[0][0]
-            base1_name = base_pair[0][1]
-            interaction_type1 = base_pair[0][2]
+        for basepair, self.hbonds in self.hbonds_for_basepair.items():
+            base1_id = basepair[0][0]
+            base1_name = basepair[0][1]
+            interaction_type1 = basepair[0][2]
             
-            base2_id = base_pair[1][0]
-            base2_name = base_pair[1][1]
-            interaction_type2 = base_pair[1][2]
+            base2_id = basepair[1][0]
+            base2_name = basepair[1][1]
+            interaction_type2 = basepair[1][2]
             
+            # no need
             data_full_df = {
                 'BaseId1': base1_id,
                 'BaseName1': base1_name,
@@ -454,6 +453,7 @@ class RNA(object):
                 hbond_base2 = hbond[1]
                 wobbleGU = False
 
+            # create function to detect if wobble or not _check_wobble(base1,base2,atom1,atom2)
                 if base1_name == 'G' and base2_name == 'U':
                     if hbond_base1 ==  ('O6' or 'N1') and hbond_base2 == ('N3' or 'O4'):
                         wobbleGU = True
@@ -491,8 +491,8 @@ class RNA(object):
         """
         self._get_interactions()
         self._get_hbonds()
-        self._get_hbonds_for_base_pair()
-        self._get_base_pairs_interactions()
+        self._get_hbonds_for_basepair()
+        self._get_basepairs_interactions()
         self.get_simple_df()
         self.get_full_df()
         self.plot_df_interactions() # !!!!
