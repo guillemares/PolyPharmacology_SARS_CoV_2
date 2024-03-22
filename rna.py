@@ -331,6 +331,7 @@ class RNA(object):
                         base2_atom = donor_atom_name
 
                     self.hbonds_for_basepair[basepair_key].append((base1_atom, base2_atom))
+        print(self.hbonds_for_basepair)
 
         if self.test:
             return type(self.hbonds_for_basepair), len(self.hbonds_for_basepair)
@@ -404,16 +405,16 @@ class RNA(object):
 
         full_df = []
 
-        for basepair, self.hbonds in self.hbonds_for_basepair.items():
-            base1_id = basepair[0][0]
-            base1_name = basepair[0][1]
-            interaction_type1 = basepair[0][2]
-            
-            base2_id = basepair[1][0]
-            base2_name = basepair[1][1]
-            interaction_type2 = basepair[1][2]
-            
-            # no need
+        for i in range(self.basepairs.shape[0]):
+            base1_index = self.basepairs[i, 0]
+            base2_index = self.basepairs[i, 1]
+            base1_id = self.nucleotides_id[base1_index]
+            base2_id = self.nucleotides_id[base2_index]
+            base1_name = self.nucleotides_names[base1_index]
+            base2_name = self.nucleotides_names[base2_index]
+            interaction_type1 = self.interactions[i*2]
+            interaction_type2 = self.interactions[i*2+1]
+
             data_full_df = {
                 'BaseId1': base1_id,
                 'BaseName1': base1_name,
@@ -421,29 +422,12 @@ class RNA(object):
                 'BaseName2': base2_name
             }
 
-            i = 1
-
+            print(self.hbonds_for_basepair, data_full_df)
             has_wobble = False
-
+            i = 1
             for hbond in self.hbonds:
-            # create function to detect if wobble or not _check_wobble(base1,base2,atom1,atom2)
-
-                hbond_base1 = hbond[0]
-                hbond_base2 = hbond[1]
-                wobbleGU = False
-                if base1_name == 'G' and base2_name == 'U':
-                    if hbond_base1 ==  ('O6' or 'N1') and hbond_base2 == ('N3' or 'O4'):
-                        wobbleGU = True
-                
-                elif base1_name == 'U' and base2_name == 'G':
-                    if hbond_base1 ==  ('O4' or 'N3') and hbond_base2 == ('O6' or 'N1'):
-                        wobbleGU = True
-            
-                has_wobble = has_wobble or wobbleGU
-                data_full_df[f'HBond{i}'] = f'{hbond_base1}-{hbond_base2}'
-                
-                # self._check_wobble(data_full_df, base1_name, base2_name, hbond_base1, hbond_base2, i)
-
+                has_wobble = self._check_wobble(base1_name, base2_name, hbond)
+                data_full_df[f'HBond{i}'] = f'{self.hbond_base1}-{self.hbond_base2}'
                 i += 1
 
             if has_wobble:
@@ -463,21 +447,21 @@ class RNA(object):
 
         return 0
 
+    def _check_wobble(self, base1_name, base2_name, hbond):
+        self.hbond_base1 = hbond[0]
+        self.hbond_base2 = hbond[1]
+        wobbleGU = False
+        if base1_name == 'G' and base2_name == 'U':
+            if self.hbond_base1 ==  ('O6' or 'N1') and self.hbond_base2 == ('N3' or 'O4'):
+                wobbleGU = True
+                        
+        elif base1_name == 'U' and base2_name == 'G':
+            if self.hbond_base1 ==  ('O4' or 'N3') and self.hbond_base2 == ('O6' or 'N1'):
+                wobbleGU = True
+        has_wobble = has_wobble or wobbleGU
 
-    def get_main(self):
-        """
-
-        """
-        self._get_interactions()
-        self._get_hbonds()
-        self._get_hbonds_for_basepair()
-        self._get_basepairs_interactions()
-        self.get_simple_df()
-        self.get_full_df()
-        self.plot_df_interactions() # !!!!
-
-        return 0
-
+        return has_wobble
+    
     def store_df(self):
         """
         """
