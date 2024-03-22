@@ -223,42 +223,6 @@ class RNA(object):
         else:
             return 0
 
-        # def _get_basepairs_interactions(self):
-        #     """
-        #     Assign to each basepair a 2 dimensional np array where each
-        #     element of it containts the following information:
-        #     ['nucleotide1 id', 'nucleotide1 name', 'interaction type']
-
-        #     Returns:
-        #     -----------
-        #     basepairs_interactions: np array shape (N,2,3)
-
-        #     Example:
-        #     [[[1, 'A', 'cW'], [2, 'U', 'tW']], [[3, 'G', 'cS'], [4, 'C', 'tS']]]
-
-        #     >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
-        #     >>> rnaobj._get_basepairs_interactions()
-        #     (5, 2, 3)
-        #     """
-        #     basepairs_interactions = []
-        #     for i in range(self.basepairs.shape[0]):
-        #         edge1 = self.interactions[i*2]
-        #         edge2 = self.interactions[i*2+1]
-
-        #         basepairs1 = self.basepairs[i, 0] + 1
-        #         basepairs2 = self.basepairs[i, 1] + 1
-
-        #         basepairs_interactions.append(
-        #             [[basepairs1, self.nucleotides_names[self.basepairs[i, 0]],
-        #              edge1],
-        #              [basepairs2, self.nucleotides_names[self.basepairs[i, 1]],
-        #              edge2]])
-
-        #     self.basepairs_interactions = np.asarray(basepairs_interactions)
-        #     if self.test:
-        #         return self.basepairs_interactions.shape
-        #     else:
-        #         return 0
 
     def _get_hbonds(self):
         """
