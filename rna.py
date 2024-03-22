@@ -35,17 +35,15 @@ class RNA(object):
         self.biotite_nucleotides = self.biotite_atom_array[
             struc.filter_nucleotides(self.biotite_atom_array)]
         self._get_nucleotides()
-        if init_index:
-            self._reset_index(init_index)
+        #if init_index:
+        #    self._reset_index(init_index)
         self._get_basepairs()
         self._get_glycosidic_bonds()
         self._get_edges()
         self._get_interactions()
-        # self._get_hbonds_for_basepair()
-        self.get_simple_df() # This function will be used only when the user types --output = 'Simple'
-        # self.get_full_df() # This function will be used only when the user types --output = 'Complex'
-        # self.plot_df_interactions() out of the loop, it has to be used after storing all DataFrames in global_df
+        self.get_df_simple()
 
+    # _reset_index NOT working!
     def _reset_index(self, init_index):
         """
         This function resets the index of the nucleotides to start from
@@ -100,19 +98,24 @@ class RNA(object):
         (basepairs).
 
         Return:
-            basepairs: np array, shape=(N,2) where N is the number of
-                       basepairs
+            basepairs: list of length N where N is the number of
+                       basepairs and where each element is a tupple with the 
+                       indexes of the two nucleotides forming the basepair
 
         >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
         >>> rnaobj._get_basepairs()
-        (5, 2)
+        5
         """
-        self.basepairs_atoms = struc.base_pairs(self.biotite_nucleotides)   # Gives atoms index. It just returns one index per base pair, so it is not useful
+        self.basepairs_atoms = struc.base_pairs(self.biotite_nucleotides)
         self.basepairs = struc.get_residue_positions(
             self.biotite_nucleotides, self.basepairs_atoms.flatten()).reshape(
             self.basepairs_atoms.shape)
+        self.basepairs = [tuple(basepair) for basepair in self.basepairs]
+        self.basepairs_id = [(self.nucleotides_id[basepair[0]],
+                             self.nucleotides_id[basepair[1]])
+                            for basepair in self.basepairs]
         if self.test:
-            return self.basepairs.shape
+            return len(self.basepairs)
         else:
             return 0
 
@@ -171,7 +174,7 @@ class RNA(object):
             self.edges = struc.base_pairs_edge(self.biotite_nucleotides,
                                                self.basepairs_atoms)
         except BadStructureError:
-            self.edges = np.zeros(self.basepairs.shape, dtype=int)
+            self.edges = np.zeros((len(self.basepairs),2), dtype=int)
             return -1
         if self.test:
             return self.edges.shape
@@ -259,158 +262,170 @@ class RNA(object):
 
     def _get_hbonds(self):
         """
-        Parameters:
-        -----------
-        atom_array: AtomArray
-            Contains the structure of a nucleic acid.
+        Computes all hydrogen bonds in the RNA structure, not only the
+        hydrogen bonds in the base pairs.
 
         Returns:
         -----------
         hbonds: numpy array, shape=(N, 3)
-            Contains the hydrogen bonds in the structure. Each row contains
-            the indices of the atoms involved in a hydrogen bond, with the
-            columns representing the Donor, Acceptor and Hydrogen atom.
+            Each row contains the indices of the atoms involved in
+            the H-bond, with each column representing the Donor,
+            Acceptor and Hydrogen.
 
             Example:
             [[566, 577,  14],
              [534, 546,  50],
              [505, 517,  79]]
 
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj._get_hbonds()
+        (22, 3)
         """
         self.hbonds = struc.hbond(self.biotite_nucleotides)
-        return 0
+        if self.test:
+            return self.hbonds.shape
+        else:
+            return 0
 
-    def _get_hbonds_for_basepair(self):
+        # def _get_hbonds_for_basepair(self):
+        #     """
+        #     Associate the hydrogen bonds with the base pairs in the structure,
+        #     using the index of the atoms (Donor, Acceptor and Hydrogen).
+        #     Note that each base pair may have more than one hydrogen bond.
+
+        #     Returns:
+        #     -----------
+        #     hbonds_for_basepair: dict
+        #         Contains the hydrogen bonds for each base pair in the structure.
+        #         The key is a tuple with the base pair, and the value is a list
+        #         with the atoms involved in the hydrogen bond (Donor, Acceptor).
+        #         Hydrogen atom is not included for simplicity.
+
+        #         Example:
+        #         {((1, 'G', 'cW'), (18, 'C', 'cW')): [('O6', 'N4'), ('N2', 'O2'), ('N1', 'N3')],
+        #          ((2, 'A', 'cW'), (17, 'U', 'cW')): [('N1', 'N3'), ('N6', 'O4')]}
+
+        #     >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        #     >>> rnaobj._get_hbonds_for_basepair()
+        #     (<class 'dict'>, 5)
+        #     """
+        #     self.hbonds_for_basepair = {}
+        #     for hbond in self.hbonds:
+        #         donor_index, hydrogen_index, acceptor_index = hbond
+
+        #         donor_nucleotide = self.biotite_nucleotides[donor_index].res_id
+        #         hydrogen_nucleotide = self.biotite_nucleotides[hydrogen_index].res_id
+        #         acceptor_nucleotide = self.biotite_nucleotides[acceptor_index].res_id
+
+        #         for index, row in self.df_simple.iterrows():
+        #             if (donor_nucleotide == row['BaseId1'] and acceptor_nucleotide == row['BaseId2']) or \
+        #                (donor_nucleotide == row['BaseId2'] and acceptor_nucleotide == row['BaseId1']):
+        #                 basepair_key = (row['BaseId1'], row['BaseName1'])
+        #                 if basepair_key not in self.hbonds_for_basepair:
+        #                     self.hbonds_for_basepair[basepair_key] = []
+
+        #                 donor_atom_name = self.biotite_nucleotides[donor_index].atom_name
+        #                 acceptor_atom_name = self.biotite_nucleotides[acceptor_index].atom_name
+
+        #                 if donor_nucleotide == row['BaseId1']:
+        #                     base1_atom = donor_atom_name
+        #                     base2_atom = acceptor_atom_name
+        #                 else:
+        #                     base1_atom = acceptor_atom_name
+        #                     base2_atom = donor_atom_name
+
+        #                 self.hbonds_for_basepair[basepair_key].append((base1_atom, base2_atom))
+        #     if self.test:
+        #         return type(self.hbonds_for_basepair), len(self.hbonds_for_basepair)
+
+        #     return 0
+
+    def get_df_simple(self):
         """
-        Associate the hydrogen bonds with the base pairs in the structure,
-        using the index of the atoms (Donor, Acceptor and Hydrogen).
-        Note that each base pair may have more than one hydrogen bond.
-
-        Parameters:
-        -----------
-        hbonds: numpy array, shape=(N, 3)
-            Contains the hydrogen bonds in the structure. Each row contains
-            the indices of the atoms involved in a hydrogen bond, with the
-            columns representing the Donor, Acceptor and Hydrogen atom.
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure.
+        Create a dataframe with the base pairs and the interaction type,
+        without the hydrogen bonds.
 
         Returns:
         -----------
-        hbonds_for_basepair: dict
-            Contains the hydrogen bonds for each base pair in the structure.
-            The key is a tuple with the base pair, and the value is a list
-            with the atoms involved in the hydrogen bond (Donor, Acceptor).
-            Hydrogen atom is not included for simplicity.
-
-            Example:
-            {((1, 'G', 'cW'), (18, 'C', 'cW')): [('O6', 'N4'), ('N2', 'O2'), ('N1', 'N3')],
-             ((2, 'A', 'cW'), (17, 'U', 'cW')): [('N1', 'N3'), ('N6', 'O4')]}
-        """
-        self.hbonds_for_basepair = {}
-        for hbond in self.hbonds:
-            donor_index = hbond[0]
-            hydrogen_index = hbond[1]
-            acceptor_index = hbond[2]
-
-            donor_nucleotide = self.biotite_nucleotides[donor_index].res_id
-            hydrogen_nucleotide = self.biotite_nucleotides[hydrogen_index].res_id
-            acceptor_nucleotide = self.biotite_nucleotides[acceptor_index].res_id
-
-            for basepair in self.basepairs:
-                if (donor_nucleotide in basepair[0] and acceptor_nucleotide in basepair[1]) \
-                or (donor_nucleotide in basepair[1] and acceptor_nucleotide in basepair[0]):
-                    basepair_key = (tuple(basepair[0]), tuple(basepair[1]))
-                    if basepair_key not in self.hbonds_for_basepair:
-                        self.hbonds_for_basepair[basepair_key] = []
-                    
-                    donor_atom_name = self.nucleotides_names[donor_nucleotide].atom_name        # Returns the donor atom type
-                    hydrogen_atom_name = self.nucleotides_names[hydrogen_nucleotide].atom_name  # Returns the hydrogen atom type
-                    acceptor_atom_name = self.nucleotides_names[acceptor_nucleotide].atom_name  # Returns the acceptor atom type
-
-                    if donor_nucleotide == basepair[0][0]:
-                        base1_atom = donor_atom_name
-                        base2_atom = acceptor_atom_name
-                    else:
-                        base1_atom = acceptor_atom_name
-                        base2_atom = donor_atom_name
-
-                    self.hbonds_for_basepair[basepair_key].append([base1_atom, base2_atom])
-
-        return 0
-
-    # I propose two possibilities. It is similar to my original code but implementing the idea 
-    # that the user may prefer a simpler calculation. Arguments --output = (Simple or Complex).
-    # a) If the user just needs to compute de base pairs a simpler dataframe
-    #    can be created with these information:
-    #    'BaseId1', 'BaseName1', 'BaseId2', 'BaseName2', 'Annotation' (annotation 1 and 2)
-    #
-    # b) If the user needs to compute the hydrogen bonds, a more complex dataframe
-    #    can be created with these information:
-    #    'BaseId1', 'BaseName1', 'BaseId2', 'BaseName2', 'Annotation', 'HBond1', 'HBond2', 'HBond3', ..., 'WobbleGU?'
-
-    def get_simple_df(self):
-        """
-        Create a dataframe with the base pairs and the interaction type, 
-        without the hydrogen bonds. 
-        
-        Parameters:
-        -----------
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure.
-        nucleotides_names: list
-            Contains the nucleotides names in the structure.
-
-        Returns:
-        -----------
-        simple_df: pandas dataframe
+        df_simple: pandas dataframe
             Contains the base pairs and the interaction type.
             Example:
             BaseId1  BaseName1  BaseId2  BaseName2  Interaction Type
             1        G          18       C          cWcW
             2        A          17       U          tHcS
 
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj.get_df_simple()
+        (5, 5)
         """
-        simple_df = []
+        df_simple = []
 
-        for basepair in self.basepairs:
-            base1_id = basepair[0][0]
-            base1_name = basepair[0][1]
-            interaction_type1 = basepair[0][2]
+        for i in range(len(self.basepairs)):
 
-            base2_id = basepair[1][0]
-            base2_name = basepair[1][1]
-            interaction_type2 = basepair[1][2]
-            
-            simple_df.append({
+            base1_index = self.basepairs[i][0]
+            base2_index = self.basepairs[i][1]
+            base1_id = self.nucleotides_id[base1_index]
+            base2_id = self.nucleotides_id[base2_index]
+            base1_name = self.nucleotides_names[base1_index]
+            base2_name = self.nucleotides_names[base2_index]
+            interaction_type1 = self.interactions[i*2]
+            interaction_type2 = self.interactions[i*2+1]
+
+            df_simple.append({
                 'BaseId1': base1_id,
                 'BaseName1': base1_name,
                 'BaseId2': base2_id,
                 'BaseName2': base2_name,
-                'Interaction Type': interaction_type1 + interaction_type2})
+                'Interaction Type': interaction_type1 + interaction_type2
+                })
 
-        simple_df = pd.DataFrame(simple_df)
-        self.simple_df = simple_df
+        df_simple = pd.DataFrame(df_simple)
+        self.df_simple = df_simple
 
-        return 0
+        if self.test:
+            return self.df_simple.shape
+        else:
+            return 0
+
+    def _get_basepair_for_hbond(self, hbond):
+        """
+
+        """
+        donor_index, hydrogen_index, acceptor_index = hbond
+        donor_nucleotide = self.biotite_nucleotides[donor_index].res_id
+        acceptor_nucleotide = self.biotite_nucleotides[acceptor_index].res_id
+        basepair = (donor_nucleotide, acceptor_nucleotide)
+
+        return basepair
+
+    def _get_hbond_atom_names(self, hbond):
+        """
+
+        """
+        donor_name = self.biotite_nucleotides[hbond[0]].atom_name
+        acceptor_name = self.biotite_nucleotides[hbond[2]].atom_name
+
+        return donor_name, acceptor_name
+
+    def _check_wobble(self, base1_name, base2_name, hbond):
+        hbond_base1 = hbond[0]
+        hbond_base2 = hbond[1]
+        wobbleGU = False
+        if base1_name == 'G' and base2_name == 'U':
+            if hbond_base1 ==  ('O6' or 'N1') and hbond_base2 == ('N3' or 'O4'):
+                wobbleGU = True
+
+        elif base1_name == 'U' and base2_name == 'G':
+            if hbond_base1 ==  ('O4' or 'N3') and hbond_base2 == ('O6' or 'N1'):
+                wobbleGU = True
+
+        return wobbleGU
 
     def get_full_df(self):
         """
         Create a dataframe with the base pairs, the interaction type and the hydrogen bonds,
         including donors and acceptors atoms. Not only Watson-Crick, Hoogsteen and Sugar edges
         are considered, but also Wobble GU.
-
-        Parameters:
-        -----------
-        basepairs: numpy array, shape=(N, 2)
-            Contains the base pairs in the structure.
-        nucleotides_names: list
-            Contains the nucleotides names in the structure.
-        hbonds_for_basepair: dict
-            Contains the hydrogen bonds for each base pair in the structure.
-            The key is a tuple with the base pair, and the value is a list
-            with the atoms involved in the hydrogen bond (Donor, Acceptor).
-            Hydrogen atom is not included for simplicity.
 
         Returns:
         -----------
@@ -419,83 +434,61 @@ class RNA(object):
             Example:
             BaseId1  BaseName1  BaseId2  BaseName2  Interaction Type  HBond1  HBond2  HBond3
             1        G          18       C          cWcW              O6-N4   N2-O2   N1-N3
-            2        A          17       U          tHcS              N1-N3   N6-O4        
-            3        U          16       A          tHcW              N3-O2                
+            2        A          17       U          tHcS              N1-N3   N6-O4
+            3        U          16       A          tHcW              N3-O2
+
         """
         if not hasattr(self, 'hbonds'):
             self._get_hbonds()
 
-        full_df = []
+        df_complex = self.df_simple.copy()
 
-        for basepair, self.hbonds in self.hbonds_for_basepair.items():
-            base1_id = basepair[0][0]
-            base1_name = basepair[0][1]
-            interaction_type1 = basepair[0][2]
-            
-            base2_id = basepair[1][0]
-            base2_name = basepair[1][1]
-            interaction_type2 = basepair[1][2]
-            
-            # no need
-            data_full_df = {
-                'BaseId1': base1_id,
-                'BaseName1': base1_name,
-                'BaseId2': base2_id,
-                'BaseName2': base2_name
-            }
-
-            i = 1
-
-            has_wobble = False
-
-            for hbond in self.hbonds:
-                hbond_base1 = hbond[0]
-                hbond_base2 = hbond[1]
-                wobbleGU = False
-
-            # create function to detect if wobble or not _check_wobble(base1,base2,atom1,atom2)
-                if base1_name == 'G' and base2_name == 'U':
-                    if hbond_base1 ==  ('O6' or 'N1') and hbond_base2 == ('N3' or 'O4'):
-                        wobbleGU = True
-                
-                elif base1_name == 'U' and base2_name == 'G':
-                    if hbond_base1 ==  ('O4' or 'N3') and hbond_base2 == ('O6' or 'N1'):
-                        wobbleGU = True
-            
-                has_wobble = has_wobble or wobbleGU
-                data_full_df[f'HBond{i}'] = f'{hbond_base1}-{hbond_base2}'
-                
-                i += 1
-
-            if has_wobble:
-                data_full_df['InteractionType'] = 'Wobble GU'
+        # Compute a dictionary which given a basepair return its hbonds
+        basepair_hbonds = {}
+        basepair_hbonds_names = {}
+        for hbond in self.hbonds:
+            basepair = self._get_basepair_for_hbond(hbond)
+            donor_name, acceptor_name = self._get_hbond_atom_names(hbond)
+            hbond_name = '%s-%s' % (donor_name, acceptor_name)
+            if basepair not in self.basepairs_id:
+                _basepair = (basepair[1], basepair[0])
+                if _basepair in self.basepairs_id:
+                    basepair = (_basepair[0], _basepair[1])
+                else:
+                    continue
             else:
-                data_full_df['InteractionType'] = interaction_type1 + interaction_type2
+                basepair = (basepair[0], basepair[1])
+            if basepair not in basepair_hbonds.keys():
+                basepair_hbonds[basepair] = [hbond]
+                basepair_hbonds_names[basepair] = [hbond_name]
+            else:
+                basepair_hbonds[basepair].append(hbond)
+                basepair_hbonds_names[basepair].append(hbond_name)
 
-            full_df.append(data_full_df)
+        # Fill df_complex with the new HBonds
+        max_hbonds = max([len(hbonds) for hbonds in
+                        basepair_hbonds_names.values()])
+        for i in range(max_hbonds):
+            df_complex['Hbond' + str(i+1)] = None
 
-        full_df = pd.DataFrame(full_df)
-        column_order = ['BaseId1', 'BaseName1', 'BaseId2', 'BaseName2']
-        hbond_columns = [column for column in full_df.columns if column.startswith('HBond')]
-        interaction_column = ['InteractionType']
-        new_columns = column_order + interaction_column + hbond_columns
-        full_df = full_df[new_columns]
-        self.full_df = full_df
-
-        return 0
+        for basepair, hbond_names in basepair_hbonds_names.items():
+            for i, hbond_name in enumerate(hbond_names):
+                df_complex.loc[(df_complex['BaseId1'] == basepair[0])
+                             & (df_complex['BaseId2'] == basepair[1]),
+                             'Hbond' + str(i+1)] = hbond_name
 
 
-    def get_main(self):
-        """
-
-        """
-        self._get_interactions()
-        self._get_hbonds()
-        self._get_hbonds_for_basepair()
-        self._get_basepairs_interactions()
-        self.get_simple_df()
-        self.get_full_df()
-        self.plot_df_interactions() # !!!!
+        # Check if interaction type is Wobble GU using hbonds information
+        for index, row in self.df_simple.iterrows():
+            basepair = (row['BaseId1'], row['BaseId2'])
+            hbonds = basepair_hbonds[basepair]
+            for hbond in hbonds:
+                wobbleGU = self._check_wobble(row['BaseName1'],
+                                              row['BaseName2'],
+                                              hbond)
+                if wobbleGU:
+                    df_complex['InteractionType'] = 'Wobble GU'
+        self.df_complex = df_complex
 
         return 0
 
@@ -504,14 +497,10 @@ class RNA(object):
         """
 
         global_df = pd.concat([set.full_df for set in self.sets])
-        
-        self.global_df = global_df
-        
-        return 0
 
-    # As it needs multiple files to be created, it should be
-    # used when the user types --dir = 'path/to/dir', where
-    # all pdb files will be read.
+        self.global_df = global_df
+
+        return 0
 
     def plot_df_interactions(self, indir, outdir):
         """
@@ -532,7 +521,7 @@ class RNA(object):
             if bp_label not in pair_df_index:
                 pair_df_index[bp_label] = len(pair_df)
                 pair_df.append(bp_label)
- 
+
         sns.set_theme(style="whitegrid")
         plt.figure(figsize=(28, 15))
         x = np.arange(len(pair_df))
@@ -589,6 +578,7 @@ if __name__ == '__main__':
 
     rnaobj = RNA(pdbfile=args.pdb)
 
+    rnaobj.get_full_df()
     # print(rnaobj.df_interactions)
 
     # rnaobj.plot_df_interactions(outname='.pdf')
