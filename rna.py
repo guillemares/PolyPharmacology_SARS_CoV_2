@@ -139,7 +139,10 @@ class RNA(object):
         """
         self.glycosidic_bonds = struc.base_pairs_glycosidic_bond(
             self.biotite_nucleotides, self.basepairs_atoms)
-        return 0
+        if self.test:
+            return list(self.glycosidic_bonds)
+        else:
+            return 0
 
     def _get_edges(self):
         """
@@ -168,8 +171,8 @@ class RNA(object):
         (5, 2)
         """
         try:
-            self.edges = struc.base_pairs_edge(
-                self.biotite_nucleotides, self.basepairs_atoms)
+            self.edges = struc.base_pairs_edge(self.biotite_nucleotides,
+                                               self.basepairs_atoms)
         except BadStructureError:
             self.edges = np.zeros((len(self.basepairs), 2), dtype=int)
             return -1
