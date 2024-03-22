@@ -354,6 +354,9 @@ class RNA(object):
         2        A          17       U          tHcS             N1-N3   N6-O4
         3        U          16       A          tHcW             N3-O2
 
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj.get_full_df()
+        (5, 8)
         """
         if not hasattr(self, 'hbonds'):
             self._get_hbonds()
@@ -366,33 +369,38 @@ class RNA(object):
         for hbond in self.hbonds:
             basepair = self._get_basepair_for_hbond(hbond)
             donor_name, acceptor_name = self._get_hbond_atom_names(hbond)
-            hbond_name = '%s-%s' % (donor_name, acceptor_name)
+            # hbond_name = '%s-%s' % (donor_name, acceptor_name)
             if basepair not in self.basepairs_id:
                 _basepair = (basepair[1], basepair[0])
                 if _basepair in self.basepairs_id:
                     basepair = (_basepair[0], _basepair[1])
+                    hbond_name = '%s-%s' % (acceptor_name, donor_name)
                 else:
                     continue
             else:
                 basepair = (basepair[0], basepair[1])
+            hbond_name = '%s-%s' % (donor_name, acceptor_name)
             if basepair not in basepair_hbonds.keys():
                 basepair_hbonds[basepair] = [hbond]
                 basepair_hbonds_names[basepair] = [hbond_name]
             else:
                 basepair_hbonds[basepair].append(hbond)
                 basepair_hbonds_names[basepair].append(hbond_name)
-
+        print(basepair_hbonds)
         # Fill df_complex with the new HBonds
         max_hbonds = max([len(hbonds) for hbonds in
                         basepair_hbonds_names.values()])
         for i in range(max_hbonds):
             df_complex['Hbond' + str(i+1)] = None
+        print(df_complex)
 
         for basepair, hbond_names in basepair_hbonds_names.items():
             for i, hbond_name in enumerate(hbond_names):
                 df_complex.loc[(df_complex['BaseId1'] == basepair[0])
                              & (df_complex['BaseId2'] == basepair[1]),
                              'Hbond' + str(i+1)] = hbond_name
+
+        print(df_complex)
 
         # Check if interaction type is Wobble GU using hbonds information
         for index, row in self.df_simple.iterrows():
@@ -406,7 +414,10 @@ class RNA(object):
                     df_complex['InteractionType'] = 'Wobble GU'
         self.df_complex = df_complex
 
-        return 0
+        if self.test:
+            return self.df_complex.shape
+        else:
+            return 0
 
     def store_df(self):
         """
