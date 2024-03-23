@@ -98,6 +98,7 @@ class RNA(object):
         (basepairs).
 
         Return:
+        -----------
             basepairs: list of length N where N is the number of
                        basepairs and where each element is a tupple with the
                        indexes of the two nucleotides forming the basepair
@@ -318,21 +319,24 @@ class RNA(object):
 
         return donor_name, acceptor_name
 
-    def _check_wobble(self, base1_name, base2_name, hbond):
+    def _check_wobble(self, base1_name, base2_name, hbond, wobbleGU):
         """
 
         """
-        hbond_base1 = hbond[0]
-        hbond_base2 = hbond[1]
-        wobbleGU = False
+        hbond_base1, hbond_base2 = hbond.split('-')
+
         if base1_name == 'G' and base2_name == 'U':
-            if hbond_base1 == ('O6' or 'N1') and hbond_base2 == ('N3' or 'O4'):
-                wobbleGU = True
+            if hbond_base1 == ('O6') and hbond_base2 == ('N3'):
+                wobbleGU += 1
+            elif hbond_base1 == ('N1') and hbond_base2 == ('O2'):
+                wobbleGU += 1
 
         elif base1_name == 'U' and base2_name == 'G':
-            if hbond_base1 == ('O4' or 'N3') and hbond_base2 == ('O6' or 'N1'):
-                wobbleGU = True
-
+            if hbond_base1 == ('N3') and hbond_base2 == ('O6'):
+                wobbleGU += 1
+            elif hbond_base1 == ('O2') and hbond_base2 == ('N1'):
+                wobbleGU += 1
+        
         return wobbleGU
 
     def get_full_df(self):
@@ -387,6 +391,7 @@ class RNA(object):
                 basepair_hbonds[basepair].append(hbond)
                 basepair_hbonds_names[basepair].append(hbond_name)
         print(basepair_hbonds)
+        
         # Fill df_complex with the new HBonds
         max_hbonds = max([len(hbonds) for hbonds in
                         basepair_hbonds_names.values()])
@@ -402,48 +407,49 @@ class RNA(object):
 
         print(df_complex)
 
-        # Check if interaction type is Wobble GU using hbonds information
-        for index, row in self.df_simple.iterrows():
-            basepair = (row['BaseId1'], row['BaseId2'])
-            hbonds = basepair_hbonds[basepair]
-            for hbond in hbonds:
-                wobbleGU = self._check_wobble(row['BaseName1'],
-                                              row['BaseName2'],
-                                              hbond)
-                if wobbleGU:
-                    df_complex['InteractionType'] = 'Wobble GU'
-        self.df_complex = df_complex
+        for index, row in df_complex.iterrows():
+            base1_name = row['BaseName1']
+            base2_name = row['BaseName2']
+            wobbleGU = 0
+            for i in range(max_hbonds):
+                hbond = row['Hbond' + str(i+1)]
+                if hbond is not None:
+                    wobbleGU = self._check_wobble(base1_name, base2_name, hbond, wobbleGU)
+                    # if wobbleGU == 1:
+                        # df_complex.loc[index, 'Interaction Type'] = '¿WobbleGU?'
+                    if wobbleGU == 2:
+                        df_complex.loc[index, 'Interaction Type'] = 'WobbleGU'
 
+        self.df_complex = df_complex
+        print(self.df_complex)
         if self.test:
             return self.df_complex.shape
+            # return self.df_complex.shape, self.df_complex.loc[14, 'Interaction Type']
         else:
             return 0
 
     def store_df(self):
         """
+        Store the dataframe in a txt/csv file. The df stored
+        will be the one the user has computed, simple or complex.
         """
-
-        global_df = pd.concat([set.full_df for set in self.sets])
-
-        self.global_df = global_df
+        if self.df_complex is not None:
+            self.df_complex.to_csv('complex_df.txt', sep='\t')
+            # self.df_complex.to_csv('complex_df.csv')
+        else:
+            self.df_simple.to_csv('simple_df.txt', sep='\t')
+            # self.df_simple.to_csv('complex_df.csv')
 
         return 0
 
-    def plot_df_interactions(self, indir, outdir):
+    def plot_df_interactions(self):
         """
         """
-        files = glob.glob(os.path.join(indir, '*.pdb'))
-        global_df = pd.DataFrame
-
-        for file in files:
-            rnaobj = RNA(pdbfile=file)
-            rnaobj.get_main() # Check whether it is correctly implemented
-            global_df = pd.concat([global_df, rnaobj.full_df])
 
         pair_df = []
         pair_df_index = {}
 
-        for index, row in global_df.iterrows():
+        for index, row in self.df_complex.iterrows():
             bp_label = f"{row['BaseName1']}{row['BaseId1']}-{row['BaseName2']}{row['BaseId2']}"
             if bp_label not in pair_df_index:
                 pair_df_index[bp_label] = len(pair_df)
@@ -453,19 +459,19 @@ class RNA(object):
         plt.figure(figsize=(28, 15))
         x = np.arange(len(pair_df))
         width = 0.35
-        unique_interactions = global_df['InteractionType'].unique()
+        unique_interactions = self.df_complex['Interaction Type'].unique()
         color_palette = sns.color_palette("tab10", len(unique_interactions))
 
         total_interactions_per_pair = np.zeros((len(pair_df), len(unique_interactions)))
         for i, pair in enumerate(pair_df):
             total_interactions = []
             for j, interaction in enumerate(unique_interactions):
-                count = global_df[(global_df['BaseName1'] + global_df['BaseId1'].astype(str) + "-" + global_df['BaseName2'] + global_df['BaseId2'].astype(str) == pair) &
-                                   (global_df['InteractionType'] == interaction)].shape[0]
+                count = self.df_complex[(self.df_complex['BaseName1'] + self.df_complex['BaseId1'].astype(str) + "-" + self.df_complex['BaseName2'] + self.df_complex['BaseId2'].astype(str) == pair) &
+                                   (self.df_complex['Interaction Type'] == interaction)].shape[0]
                 total_interactions_per_pair[i, j] = count
 
         bottom = None
-        for i, interactin in enumerate(unique_interactions):
+        for i, interaction in enumerate(unique_interactions):
             plt.bar(x, total_interactions_per_pair[:, i], width, label=interaction, bottom=bottom, color=color_palette[i])
             if bottom is None:
                 bottom = total_interactions_per_pair[:, i]
@@ -478,14 +484,15 @@ class RNA(object):
         plt.xticks(x, pair_df, fontsize=14, rotation=45)
         plt.yticks(fontsize=14)
         plt.legend(fontsize=16)
-        plt.savefig(os.path.join(outdir, 'interactions.pdf'))
+        plt.savefig('interactions.png')
         plt.show()
 
         return 0
 
 # Args to be implemented:
 # --dir: path to the directory containing the pdb files
-# --output: Simple or Complex
+# --dataframe: Simple (default) or Complex dataframe
+# --out: path to the output directory
 
 if __name__ == '__main__':
     import doctest
@@ -506,6 +513,8 @@ if __name__ == '__main__':
     rnaobj = RNA(pdbfile=args.pdb)
 
     rnaobj.get_full_df()
+    rnaobj.store_df()
+    rnaobj.plot_df_interactions()
     # print(rnaobj.df_interactions)
 
     # rnaobj.plot_df_interactions(outname='.pdf')
