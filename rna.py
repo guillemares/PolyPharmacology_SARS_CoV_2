@@ -30,7 +30,9 @@ class RNA(object):
             Default False
         """
         self.test = test
-        self.biotite_pdb = pdb.PDBFile.read(pdbfile)
+        self.pdbfile = pdbfile
+        self.pdbfile_name = pdbfile.split('/')[-1].split('.')[0]
+        self.biotite_pdb = pdb.PDBFile.read(self.pdbfile)
         self.biotite_atom_array = pdb.get_structure(self.biotite_pdb)[0]
         self.biotite_nucleotides = self.biotite_atom_array[
             struc.filter_nucleotides(self.biotite_atom_array)]
@@ -70,9 +72,9 @@ class RNA(object):
             nucleotides_id: list (length number of nucleotides)
             nucleotides_names: list (length number of nucleotides)
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj._get_nucleotides()
-        ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], ['G', 'A', 'U', 'C', 'U', 'C', 'U', 'U', 'G', 'U', 'A', 'G', 'A', 'U', 'C'])
+        ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44], ['C', 'U', 'G', 'U', 'G', 'U', 'G', 'G', 'C', 'U', 'G', 'U', 'C', 'A', 'C', 'U', 'C', 'G', 'G', 'C', 'U', 'G', 'C', 'A', 'U', 'G', 'C', 'U', 'U', 'A', 'G', 'U', 'G', 'C', 'A', 'C', 'U', 'C', 'A', 'C', 'G', 'C', 'A', 'G'])
         """
         self.nucleotides_id = []
         self.nucleotides_names = []
@@ -103,9 +105,9 @@ class RNA(object):
                        basepairs and where each element is a tupple with the
                        indexes of the two nucleotides forming the basepair
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj._get_basepairs()
-        5
+        17
         """
         self.basepairs_atoms = struc.base_pairs(self.biotite_nucleotides)
         self.basepairs = struc.get_residue_positions(
@@ -134,9 +136,9 @@ class RNA(object):
             - 1: the glycosidic bond is in trans conformation.
             - 2: the glycosidic bond is in cis conformation.
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj._get_glycosidic_bonds()
-        [1, 1, 1, 1, 1]
+        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2]
         """
         self.glycosidic_bonds = struc.base_pairs_glycosidic_bond(
             self.biotite_nucleotides, self.basepairs_atoms)
@@ -167,9 +169,9 @@ class RNA(object):
             To avoid this, the function will return -1.
 
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj._get_edges()
-        (5, 2)
+        (17, 2)
         """
         try:
             self.edges = struc.base_pairs_edge(self.biotite_nucleotides,
@@ -193,9 +195,9 @@ class RNA(object):
             Example:
             ['cW', 'tW', 'cS', 'tS']
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj._get_interactions()
-        ['cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW']
+        ['cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'cW', 'tW', 'tW']
         """
 
         interactions = []
@@ -241,9 +243,9 @@ class RNA(object):
              [534, 546,  50],
              [505, 517,  79]]
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj._get_hbonds()
-        (22, 3)
+        (55, 3)
         """
         self.hbonds = struc.hbond(self.biotite_nucleotides)
         if self.test:
@@ -265,9 +267,9 @@ class RNA(object):
             1        G          18       C          cWcW
             2        A          17       U          tHcS
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj.get_df_simple()
-        (5, 5)
+        (17, 5)
         """
         df_simple = []
 
@@ -357,9 +359,9 @@ class RNA(object):
         2        A          17       U          tHcS             N1-N3   N6-O4
         3        U          16       A          tHcW             N3-O2
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_2.pdb', test=True)
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj.get_full_df()
-        (5, 8)
+        (17, 8)
         """
         if not hasattr(self, 'hbonds'):
             self._get_hbonds()
@@ -436,22 +438,30 @@ class RNA(object):
         will be the one the user has computed, simple or complex.
         """
 
-        if self.df_complex is not None:
-            self.df_complex.to_csv('complex_df.txt', sep='\t')
-            # self.df_complex.to_csv('complex_df.csv')
-        else:
-            self.df_simple.to_csv('simple_df.txt', sep='\t')
-            # self.df_simple.to_csv('complex_df.csv')
-
         return 0
 
     def plot_df_interactions(self):
         """
+        Plot the number of interactions per base pair with a list of all
+        base pairs in the x-axis and the number of interactions in the y-axis.
+        Given multiple files, the user will be able to compare the interactions
+        between different structures, as each interaction will be represented
+        with a different color.
+
+        Returns:
+        -----------
+        interactions.png: png file
+            Plot with the number of interactions per base pair.
+
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
+        >>> rnaobj.plot_df_interactions()
+        interactions.png
         """
+        #Test is not working for plot
         pair_df = []
         pair_df_index = {}
-
-        for index, row in self.df_complex.iterrows():
+        self.merged_df = merged_df
+        for index, row in self.merged_df.iterrows():
             bp_label = f"{row['BaseName1']}{row['BaseId1']}-{row['BaseName2']}{row['BaseId2']}"
             if bp_label not in pair_df_index:
                 pair_df_index[bp_label] = len(pair_df)
@@ -461,15 +471,15 @@ class RNA(object):
         plt.figure(figsize=(28, 15))
         x = np.arange(len(pair_df))
         width = 0.35
-        unique_interactions = self.df_complex['Interaction Type'].unique()
+        unique_interactions = self.merged_df['Interaction Type'].unique()
         color_palette = sns.color_palette("tab10", len(unique_interactions))
 
         total_interactions_per_pair = np.zeros((len(pair_df), len(unique_interactions)))
         for i, pair in enumerate(pair_df):
             total_interactions = []
             for j, interaction in enumerate(unique_interactions):
-                count = self.df_complex[(self.df_complex['BaseName1'] + self.df_complex['BaseId1'].astype(str) + "-" + self.df_complex['BaseName2'] + self.df_complex['BaseId2'].astype(str) == pair) &
-                                   (self.df_complex['Interaction Type'] == interaction)].shape[0]
+                count = self.merged_df[(self.merged_df['BaseName1'] + self.merged_df['BaseId1'].astype(str) + "-" + self.merged_df['BaseName2'] + self.merged_df['BaseId2'].astype(str) == pair) &
+                                   (self.merged_df['Interaction Type'] == interaction)].shape[0]
                 total_interactions_per_pair[i, j] = count
 
         bottom = None
@@ -480,16 +490,60 @@ class RNA(object):
             else:
                 bottom += total_interactions_per_pair[:, i]
 
+        #self.plot_name = f'interactions_{self.pdbfile_name}.png'
+        self.plot_name = 'interaction_barplot.png'
         plt.xlabel('Base Pair', fontsize=22)
         plt.ylabel('Count', fontsize=22)
         plt.title('Number of interactions per base pair', fontsize=26)
         plt.xticks(x, pair_df, fontsize=14, rotation=45)
         plt.yticks(fontsize=14)
         plt.legend(fontsize=16)
-        plt.savefig('interactions.png')
-        plt.show()
+        plt.savefig(self.plot_name)
+        #plt.show()
 
-        return 0
+        if self.test:
+            return self.plot_name
+        else:
+            return 0
+
+    def merge_df(self, merged_df):
+        """
+        Merge the dataframes of the different structures.
+
+        Input:
+        -----------
+        df: pandas dataframe
+            Dataframe to be merged.
+
+        """
+
+        rnaobj.get_full_df()
+        merged_df = pd.concat([merged_df, self.df_complex])
+
+        return merged_df
+"""
+-------------------
+-------------------
+-------------------
+"""
+
+def get_files(directory):
+    """
+    Get the files in the directory.
+
+    Input:
+    -----------
+    directory: string
+        Path to the directory containing the pdb files.
+
+    Returns:
+    -----------
+    files: list of strings
+        List of the pdb files in the directory.
+
+    """
+    files = glob.glob(os.path.join(directory, '*.pdb'))
+    return files
 
 # Args to be implemented:
 # --dir: path to the directory containing the pdb files
@@ -500,10 +554,20 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--pdb',
-                        help='',)
+                        help='Provide the individual file names to the structures '+
+                             'to be analyzed',)
     parser.add_argument('--test',
                         help='Test the code',
                         action='store_true')
+    parser.add_argument('--dir',
+                        help='Provide the directory with multiple pdb files to be analyzed',)
+    parser.add_argument('--dataframe',
+                        help='Choose the dataframe to be stored: Simple or Complex. Default=simple',
+                        choices=['simple', 'complex'],
+                        default='simple')
+    parser.add_argument('--out',
+                        help='Path to the output directory')
+
     args = parser.parse_args()
 
     if args.test:
@@ -511,11 +575,25 @@ if __name__ == '__main__':
             optionflags=doctest.ELLIPSIS | doctest.REPORT_ONLY_FIRST_FAILURE)
         sys.exit()
 
-    rnaobj = RNA(pdbfile=args.pdb)
+    if args.pdb:
+        #print(args.pdb)
+        rnaobj = RNA(pdbfile=args.pdb)
+        if args.dataframe == 'complex':
+            merged_df = pd.DataFrame()
+            merged_df = rnaobj.merge_df(merged_df)
+            rnaobj.get_full_df()
+            rnaobj.plot_df_interactions()
 
-    rnaobj.get_full_df()
-    rnaobj.store_df()
-    rnaobj.plot_df_interactions()
+    if args.dir:
+        files = get_files(args.dir)
+        merged_df = pd.DataFrame()
+        for file in files:
+            print(file)
+            rnaobj = RNA(pdbfile=file)
+            if args.dataframe == 'complex':
+                merged_df = rnaobj.merge_df(merged_df)
+        rnaobj.plot_df_interactions()
+            #rnaobj.store_df()
+
     # print(rnaobj.df_interactions)
 
-    # rnaobj.plot_df_interactions(outname='.pdf')
