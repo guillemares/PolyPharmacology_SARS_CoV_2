@@ -435,20 +435,16 @@ class RNA(object):
         else:
             return 0
 
-    def store_df(self):
+    def store_df(outdir, df):
         """
         Store the dataframe in a txt/csv file. The df stored
         will be the one the user has computed, simple or complex.
         """
-
-        if self.df_complex is not None:
-            self.df_complex.to_csv('complex_df.txt', sep='\t')
-            # self.df_complex.to_csv('complex_df.csv')
-        else:
-            self.df_simple.to_csv('simple_df.txt', sep='\t')
-            # self.df_simple.to_csv('complex_df.csv')
-
-        return 0
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+        out_file = os.path.join(outdir, f'dataframe.txt')
+        df.to_csv(out_file, type='txt', index=False, sep='\t')
+        
 
     def plot_df_interactions(self, merged_df):
         """
@@ -556,10 +552,6 @@ def get_files(directory):
     return files
 
 
-
-# Args to be implemented:
-# --out: path to the output directory
-
 if __name__ == '__main__':
     import doctest
     import argparse
@@ -576,6 +568,8 @@ if __name__ == '__main__':
                         help='Choose the dataframe to be stored: Simple or Complex. Default=simple',
                         choices=['simple', 'complex'],
                         default='simple')
+    parser.add_argument('--out',
+                        help='Path to the output directory')
 
     args = parser.parse_args()
 
@@ -600,11 +594,9 @@ if __name__ == '__main__':
             rnaobj = RNA(pdbfile=file)
             if args.dataframe == 'complex':
                 merged_df = rnaobj.merge_df(merged_df)
-        
         rnaobj.plot_df_interactions(merged_df)           
 
-        #rnaobj.store_df()
-        
+
     # print(rnaobj.df_interactions)
 
     # rnaobj.plot_df_interactions(outname='.pdf')
