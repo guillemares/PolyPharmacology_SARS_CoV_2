@@ -32,6 +32,7 @@ class RNA(object):
         self.test = test
         self.pdbfile = pdbfile
         self.pdbfile_name = pdbfile.split('/')[-1].split('.')[0]
+        print(self.pdbfile_name)
         self.biotite_pdb = pdb.PDBFile.read(self.pdbfile)
         self.biotite_atom_array = pdb.get_structure(self.biotite_pdb)[0]
         self.biotite_nucleotides = self.biotite_atom_array[
@@ -239,6 +240,7 @@ class RNA(object):
             Acceptor and Hydrogen.
 
             Example:
+            Donor, Hydrogen, Acceptors
             [[566, 577,  14],
              [534, 546,  50],
              [505, 517,  79]]
@@ -374,6 +376,7 @@ class RNA(object):
         for hbond in self.hbonds:
             basepair = self._get_basepair_for_hbond(hbond)
             donor_name, acceptor_name = self._get_hbond_atom_names(hbond)
+            # hbond_name = '%s-%s' % (donor_name, acceptor_name)
             if basepair not in self.basepairs_id:
                 _basepair = (basepair[1], basepair[0])
                 if _basepair in self.basepairs_id:
@@ -389,7 +392,7 @@ class RNA(object):
                     continue
             else:
                 basepair = (basepair[0], basepair[1])
-                hbond_name = '%s-%s' % (donor_name, acceptor_name)
+            hbond_name = '%s-%s' % (donor_name, acceptor_name)
             if basepair not in basepair_hbonds.keys():
                 basepair_hbonds[basepair] = [hbond]
                 basepair_hbonds_names[basepair] = [hbond_name]
@@ -432,15 +435,18 @@ class RNA(object):
         else:
             return 0
 
-    def store_df(self):
+    def store_df(outdir, df):
         """
         Store the dataframe in a txt/csv file. The df stored
         will be the one the user has computed, simple or complex.
         """
+        if not os.path.exists(outdir):
+            os.makedirs(outdir)
+        out_file = os.path.join(outdir, f'dataframe.txt')
+        df.to_csv(out_file, type='txt', index=False, sep='\t')
 
-        return 0
 
-    def plot_df_interactions(self):
+    def plot_df_interactions(self, merged_df):
         """
         Plot the number of interactions per base pair with a list of all
         base pairs in the x-axis and the number of interactions in the y-axis.
@@ -457,7 +463,7 @@ class RNA(object):
         >>> rnaobj.plot_df_interactions()
         interactions.png
         """
-        #Test is not working for plot
+        # Test is not working for plot_df_interactions
         pair_df = []
         pair_df_index = {}
         self.merged_df = merged_df
@@ -490,8 +496,7 @@ class RNA(object):
             else:
                 bottom += total_interactions_per_pair[:, i]
 
-        #self.plot_name = f'interactions_{self.pdbfile_name}.png'
-        self.plot_name = 'interaction_barplot.png'
+        self.plot_name = f'interactions_{self.pdbfile_name}.png'
         plt.xlabel('Base Pair', fontsize=22)
         plt.ylabel('Count', fontsize=22)
         plt.title('Number of interactions per base pair', fontsize=26)
@@ -499,7 +504,7 @@ class RNA(object):
         plt.yticks(fontsize=14)
         plt.legend(fontsize=16)
         plt.savefig(self.plot_name)
-        #plt.show()
+        plt.show()
 
         if self.test:
             return self.plot_name
@@ -521,6 +526,7 @@ class RNA(object):
         merged_df = pd.concat([merged_df, self.df_complex])
 
         return merged_df
+
 """
 -------------------
 -------------------
@@ -545,9 +551,6 @@ def get_files(directory):
     files = glob.glob(os.path.join(directory, '*.pdb'))
     return files
 
-# Args to be implemented:
-# --dir: path to the directory containing the pdb files
-# --output: Simple or Complex
 
 if __name__ == '__main__':
     import doctest
@@ -556,11 +559,12 @@ if __name__ == '__main__':
     parser.add_argument('--pdb',
                         help='Provide the individual file names to the structures '+
                              'to be analyzed',)
+                        'to be analyzed',)
     parser.add_argument('--test',
                         help='Test the code',
                         action='store_true')
     parser.add_argument('--dir',
-                        help='Provide the directory with multiple pdb files to be analyzed',)
+                        help='Provide the directory with multiple pdb files to be analyzed')
     parser.add_argument('--dataframe',
                         help='Choose the dataframe to be stored: Simple or Complex. Default=simple',
                         choices=['simple', 'complex'],
@@ -576,13 +580,12 @@ if __name__ == '__main__':
         sys.exit()
 
     if args.pdb:
-        #print(args.pdb)
+        print(args.pdb)
         rnaobj = RNA(pdbfile=args.pdb)
         if args.dataframe == 'complex':
             merged_df = pd.DataFrame()
             merged_df = rnaobj.merge_df(merged_df)
-            rnaobj.get_full_df()
-            rnaobj.plot_df_interactions()
+            rnaobj.plot_df_interactions(merged_df)
 
     if args.dir:
         files = get_files(args.dir)
@@ -592,8 +595,8 @@ if __name__ == '__main__':
             rnaobj = RNA(pdbfile=file)
             if args.dataframe == 'complex':
                 merged_df = rnaobj.merge_df(merged_df)
-        rnaobj.plot_df_interactions()
-            #rnaobj.store_df()
+        rnaobj.plot_df_interactions(merged_df)
+
 
     # print(rnaobj.df_interactions)
 
