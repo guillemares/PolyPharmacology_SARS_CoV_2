@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import sys
 import os
 import glob
 import numpy as np
@@ -12,6 +13,12 @@ import scipy.spatial.distance as ssd
 
 class superimposition(object):
     print('Hello, I am superimposition class')
+    def __init__(self, method, dir, test=False):
+        self.method = method
+        self.dir = dir
+        self.test = test
+
+    
 
 """
 ---------------------------
@@ -36,3 +43,8 @@ if __name__ == '__main__':
 
 
     args = parser.parse_args()
+
+    if args.test:
+        doctest.testmod(
+            optionflags=doctest.ELLIPSIS | doctest.REPORT_ONLY_FIRST_FAILURE)
+        sys.exit()
