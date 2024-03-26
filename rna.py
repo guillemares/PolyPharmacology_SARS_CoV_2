@@ -14,7 +14,7 @@ import os
 class RNA(object):
     """
     """
-    def __init__(self, pdbfile, init_index=None, test=False):
+    def __init__(self, pdbfile, init_index=None, test=False, outdir=None):
         """
         Class for RNA structure
 
@@ -29,10 +29,11 @@ class RNA(object):
             If True it runs a test for the class
             Default False
         """
+        self.outdir = outdir
         self.test = test
         self.pdbfile = pdbfile
         self.pdbfile_name = pdbfile.split('/')[-1].split('.')[0]
-        print(self.pdbfile_name)
+        #print(self.pdbfile_name)
         self.biotite_pdb = pdb.PDBFile.read(self.pdbfile)
         self.biotite_atom_array = pdb.get_structure(self.biotite_pdb)[0]
         self.biotite_nucleotides = self.biotite_atom_array[
@@ -304,7 +305,15 @@ class RNA(object):
 
     def _get_basepair_for_hbond(self, hbond):
         """
+        Compute the basepair for a given hydrogen bond. The basepair is
+        computed based on the index of the nucleotides involved in the
+        hydrogen bond.
 
+        Returns:
+        -----------
+        basepair: tuple
+            Contains the basepair of the hydrogen bond with the donor
+            and acceptor atoms. The hydrogen atom is not considered.
         """
         donor_index, hydrogen_index, acceptor_index = hbond
         donor_nucleotide = self.biotite_nucleotides[donor_index].res_id
@@ -315,6 +324,8 @@ class RNA(object):
 
     def _get_hbond_atom_names(self, hbond):
         """
+        Compute the atom names for the donor and acceptor atoms in the
+        hydrogen bond.
 
         """
         donor_name = self.biotite_nucleotides[hbond[0]].atom_name
@@ -324,6 +335,15 @@ class RNA(object):
 
     def _check_wobble(self, base1_name, base2_name, hbond, wobbleGU):
         """
+        Given a basepair and a hydrogen bond, check if the interaction
+        type is Wobble GU by checking the atoms involved in the hydrogen
+        bond.
+
+        Returns:
+        -----------
+        wobbleGU: integer
+            Number of hydrogen bonds that are Wobble GU. If the number
+            is 2 in the main code, the interaction type is Wobble GU.
 
         """
         hbond_base1, hbond_base2 = hbond.split('-')
@@ -428,7 +448,7 @@ class RNA(object):
                         df_complex.loc[index, 'Interaction Type'] = 'WobbleGU'
 
         self.df_complex = df_complex
-        print(self.df_complex)
+        #print(self.df_complex)
         if self.test:
             return self.df_complex.shape
             # return self.df_complex.shape, self.df_complex.loc[14, 'Interaction Type'] # We could change our test to tr_Rosetta1.pdb if we want to check if Wobble is working correctly. With this, the program would return the string 'WobbleGU' -the only wobble in this structure-.
@@ -459,9 +479,9 @@ class RNA(object):
         interactions.png: png file
             Plot with the number of interactions per base pair.
 
-        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
-        >>> rnaobj.plot_df_interactions()
-        interactions.png
+        # >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True, outdir='test')
+        # >>> rnaobj.plot_df_interactions(merged_df=pd.DataFrame())
+        # interactions.png
         """
         # Test is not working for plot_df_interactions
         pair_df = []
@@ -496,14 +516,17 @@ class RNA(object):
             else:
                 bottom += total_interactions_per_pair[:, i]
 
-        self.plot_name = f'interactions_{self.pdbfile_name}.png'
+        self.plot_name = f'interactiom_barplot.png'
         plt.xlabel('Base Pair', fontsize=22)
         plt.ylabel('Count', fontsize=22)
         plt.title('Number of interactions per base pair', fontsize=26)
         plt.xticks(x, pair_df, fontsize=14, rotation=45)
         plt.yticks(fontsize=14)
         plt.legend(fontsize=16)
-        plt.savefig(self.plot_name)
+        if self.outdir:
+            plt.savefig(os.path.join(self.outdir, self.plot_name))
+        else:
+            plt.savefig(self.plot_name)
         plt.show()
 
         if self.test:
@@ -513,7 +536,8 @@ class RNA(object):
 
     def merge_df(self, merged_df):
         """
-        Merge the dataframes of the different structures.
+        Merge the dataframes of the different structures to generate a
+        unique dataframe with all the interactions.
 
         Input:
         -----------
@@ -528,9 +552,9 @@ class RNA(object):
         return merged_df
 
 """
--------------------
--------------------
--------------------
+--------------------------------------
+--------------------------------------
+--------------------------------------
 """
 
 def get_files(directory):
@@ -558,7 +582,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('--pdb',
                         help='Provide the individual file names to the structures '+
-                             'to be analyzed',)
                         'to be analyzed',)
     parser.add_argument('--test',
                         help='Test the code',
@@ -580,7 +603,7 @@ if __name__ == '__main__':
         sys.exit()
 
     if args.pdb:
-        print(args.pdb)
+        #print(args.pdb)
         rnaobj = RNA(pdbfile=args.pdb)
         if args.dataframe == 'complex':
             merged_df = pd.DataFrame()
@@ -591,7 +614,7 @@ if __name__ == '__main__':
         files = get_files(args.dir)
         merged_df = pd.DataFrame()
         for file in files:
-            print(file)
+            #print(file)
             rnaobj = RNA(pdbfile=file)
             if args.dataframe == 'complex':
                 merged_df = rnaobj.merge_df(merged_df)
