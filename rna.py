@@ -333,7 +333,7 @@ class RNA(object):
 
         return donor_name, acceptor_name
 
-    def _check_wobble(self, base1_name, base2_name, hbond, wobbleGU):
+    def _check_wobble(self, base1_name, base2_name, hbonds):
         """
         Given a basepair and a hydrogen bond, check if the interaction
         type is Wobble GU by checking the atoms involved in the hydrogen
@@ -346,19 +346,29 @@ class RNA(object):
             is 2 in the main code, the interaction type is Wobble GU.
 
         """
-        hbond_base1, hbond_base2 = hbond.split('-')
 
-        if base1_name == 'G' and base2_name == 'U':
-            if hbond_base1 == ('O6') and hbond_base2 == ('N3'):
-                wobbleGU += 1
-            elif hbond_base1 == ('N1') and hbond_base2 == ('O2'):
-                wobbleGU += 1
+        wobbleGU = 0
+        for hbond in hbonds:
+            if hbond is not None:
+                hbond = hbond.split('-')
+                hbond_base1 = hbond[0]
+                hbond_base2 = hbond[1]
+                if base1_name == 'G' and base2_name == 'U':
+                    if hbond_base1 == ('O6') and hbond_base2 == ('N3'):
+                        wobbleGU += 1
+                    elif hbond_base1 == ('N1') and hbond_base2 == ('O2'):
+                        wobbleGU += 1
 
-        elif base1_name == 'U' and base2_name == 'G':
-            if hbond_base1 == ('N3') and hbond_base2 == ('O6'):
-                wobbleGU += 1
-            elif hbond_base1 == ('O2') and hbond_base2 == ('N1'):
-                wobbleGU += 1
+                elif base1_name == 'U' and base2_name == 'G':
+                    if hbond_base1 == ('N3') and hbond_base2 == ('O6'):
+                        wobbleGU += 1
+                    elif hbond_base1 == ('O2') and hbond_base2 == ('N1'):
+                        wobbleGU += 1
+
+        if wobbleGU == 2:
+            wobbleGU = True
+        else:
+            wobbleGU = False
 
         return wobbleGU
 
@@ -383,7 +393,7 @@ class RNA(object):
 
         >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj.get_full_df()
-        (17, 8)
+        ((17, 8), 'WobbleGU')
         """
         if not hasattr(self, 'hbonds'):
             self._get_hbonds()
@@ -396,75 +406,72 @@ class RNA(object):
         for hbond in self.hbonds:
             basepair = self._get_basepair_for_hbond(hbond)
             donor_name, acceptor_name = self._get_hbond_atom_names(hbond)
-            # hbond_name = '%s-%s' % (donor_name, acceptor_name)
             if basepair not in self.basepairs_id:
                 _basepair = (basepair[1], basepair[0])
                 if _basepair in self.basepairs_id:
                     basepair = (_basepair[0], _basepair[1])
                     hbond_name = '%s-%s' % (acceptor_name, donor_name)
-                    # Changed this so when df is printed, the hbonds are not listed as Don-Acc
-                    # but as NucAtom1-NucAtom2
-                    # i.e.: Before 1G-15C : N4-O6  N2-O2  N1-N3
-                    #       After  1G-15C : O6-N4  N2-O2  N1-N3
-                    # Atoms are printed referred to the correct nucleotide and I think is more
-                    # clear this way.
                 else:
                     continue
             else:
                 basepair = (basepair[0], basepair[1])
-            hbond_name = '%s-%s' % (donor_name, acceptor_name)
+                hbond_name = '%s-%s' % (donor_name, acceptor_name)
             if basepair not in basepair_hbonds.keys():
                 basepair_hbonds[basepair] = [hbond]
                 basepair_hbonds_names[basepair] = [hbond_name]
             else:
                 basepair_hbonds[basepair].append(hbond)
                 basepair_hbonds_names[basepair].append(hbond_name)
-        # print(basepair_hbonds)
+
         # Fill df_complex with the new HBonds
-        max_hbonds = max([len(hbonds) for hbonds in
+        self.max_hbonds = max([len(hbonds) for hbonds in
                         basepair_hbonds_names.values()])
-        for i in range(max_hbonds):
+        for i in range(self.max_hbonds):
             df_complex['Hbond' + str(i+1)] = None
-        # print(df_complex)
         for basepair, hbond_names in basepair_hbonds_names.items():
             for i, hbond_name in enumerate(hbond_names):
                 df_complex.loc[(df_complex['BaseId1'] == basepair[0])
                              & (df_complex['BaseId2'] == basepair[1]),
                              'Hbond' + str(i+1)] = hbond_name
-        # print(df_complex)
 
         # Check if interaction type is Wobble GU using hbonds information
         for index, row in df_complex.iterrows():
+            hbonds = []
             base1_name = row['BaseName1']
             base2_name = row['BaseName2']
-            wobbleGU = 0
-            for i in range(max_hbonds):
+            for i in range(self.max_hbonds):
                 hbond = row['Hbond' + str(i+1)]
-                if hbond is not None:
-                    wobbleGU = self._check_wobble(base1_name, base2_name, hbond, wobbleGU)
-#                    if wobbleGu == 1:
-#                        df_complex.loc[index, 'Interaction Type']  = '¿WobbleGU?'
-                    if wobbleGU == 2:
-                        df_complex.loc[index, 'Interaction Type'] = 'WobbleGU'
+                hbonds.append(hbond)
+            wobbleGU = self._check_wobble(base1_name, base2_name, hbonds)
+            if wobbleGU:
+                df_complex.loc[index, 'Interaction Type'] = 'WobbleGU'
 
         self.df_complex = df_complex
         #print(self.df_complex)
         if self.test:
-            return self.df_complex.shape
-            # return self.df_complex.shape, self.df_complex.loc[14, 'Interaction Type'] # We could change our test to tr_Rosetta1.pdb if we want to check if Wobble is working correctly. With this, the program would return the string 'WobbleGU' -the only wobble in this structure-.
+            #return self.df_complex.shape
+            return self.df_complex.shape, self.df_complex.loc[14, 'Interaction Type']
         else:
             return 0
 
-    def store_df(outdir, df):
+    def save_df_simple(self, outname):
         """
         Store the dataframe in a txt/csv file. The df stored
         will be the one the user has computed, simple or complex.
         """
+
         if not os.path.exists(outdir):
             os.makedirs(outdir)
         out_file = os.path.join(outdir, f'dataframe.txt')
         df.to_csv(out_file, type='txt', index=False, sep='\t')
 
+    def save_df_complex(self, outname):
+        """
+
+        """
+        # has de mirar si df_complex existeix com attribute  del teu objte
+        # en cas contrari calcular-lo abans de guardar
+        return
 
     def plot_df_interactions(self, merged_df):
         """
