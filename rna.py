@@ -213,6 +213,7 @@ class RNA(object):
                     interaction = "t"
                 elif orientation == 0:
                     interaction = "x"
+                    #break
                 if edge == 1:
                     interaction += "W"
                 elif edge == 2:
@@ -220,7 +221,8 @@ class RNA(object):
                 elif edge == 3:
                     interaction += "S"
                 elif edge == 0:
-                    interaction = "X"
+                    interaction += "X"
+                    #break
                 interactions.append(interaction)
         self.interactions = interactions
         if self.test:
@@ -403,6 +405,12 @@ class RNA(object):
         # Compute a dictionary which given a basepair return its hbonds
         basepair_hbonds = {}
         basepair_hbonds_names = {}
+        if self.hbonds.shape[0] == 0:
+            self.max_hbonds = 0
+            for i in range(self.max_hbonds):
+                df_complex['Hbond' + str(i+1)] = None
+            self.df_complex = df_complex
+            return 0
         for hbond in self.hbonds:
             basepair = self._get_basepair_for_hbond(hbond)
             donor_name, acceptor_name = self._get_hbond_atom_names(hbond)
@@ -494,6 +502,7 @@ class RNA(object):
         pair_df = []
         pair_df_index = {}
         self.merged_df = merged_df
+        self.merged_df.to_csv('merged_df.txt', index=True, sep='\t')
         for index, row in self.merged_df.iterrows():
             bp_label = f"{row['BaseName1']}{row['BaseId1']}-{row['BaseName2']}{row['BaseId2']}"
             if bp_label not in pair_df_index:
@@ -501,9 +510,9 @@ class RNA(object):
                 pair_df.append(bp_label)
 
         sns.set_theme(style="whitegrid")
-        plt.figure(figsize=(28, 15))
+        plt.figure(figsize=(45, 29))
         x = np.arange(len(pair_df))
-        width = 0.35
+        width = 0.5
         unique_interactions = self.merged_df['Interaction Type'].unique()
         color_palette = sns.color_palette("tab10", len(unique_interactions))
 
@@ -523,13 +532,13 @@ class RNA(object):
             else:
                 bottom += total_interactions_per_pair[:, i]
 
-        self.plot_name = f'interactiom_barplot.png'
-        plt.xlabel('Base Pair', fontsize=22)
-        plt.ylabel('Count', fontsize=22)
-        plt.title('Number of interactions per base pair', fontsize=26)
-        plt.xticks(x, pair_df, fontsize=14, rotation=45)
-        plt.yticks(fontsize=14)
-        plt.legend(fontsize=16)
+        self.plot_name = f'interaction_barplot.png'
+        plt.xlabel('Base Pair', fontsize=26)
+        plt.ylabel('Count', fontsize=26)
+        plt.title('Number of interactions per base pair', fontsize=28)
+        plt.xticks(x, pair_df, fontsize=16, rotation=45)
+        plt.yticks(fontsize=18)
+        plt.legend(fontsize=10)
         if self.outdir:
             plt.savefig(os.path.join(self.outdir, self.plot_name))
         else:
@@ -619,9 +628,12 @@ if __name__ == '__main__':
 
     if args.dir:
         files = get_files(args.dir)
+        with open('filenames.txt', 'w') as f:
+            for file in files:
+                f.write(file + '\n')
         merged_df = pd.DataFrame()
         for file in files:
-            #print(file)
+            print(file)
             rnaobj = RNA(pdbfile=file)
             if args.dataframe == 'complex':
                 merged_df = rnaobj.merge_df(merged_df)
