@@ -294,7 +294,8 @@ class RNA(object):
                 'BaseName1': base1_name,
                 'BaseId2': base2_id,
                 'BaseName2': base2_name,
-                'Interaction Type': interaction_type1 + interaction_type2
+                'Interaction Type': interaction_type1 + interaction_type2,
+                'File': self.pdbfile_name
                 })
 
         df_simple = pd.DataFrame(df_simple)
@@ -481,7 +482,7 @@ class RNA(object):
         # en cas contrari calcular-lo abans de guardar
         return
 
-    def plot_df_interactions(self, merged_df):
+    def plot_df_interactions(self, merged_df, color_palette):
         """
         Plot the number of interactions per base pair with a list of all
         base pairs in the x-axis and the number of interactions in the y-axis.
@@ -510,11 +511,11 @@ class RNA(object):
                 pair_df.append(bp_label)
 
         sns.set_theme(style="whitegrid")
-        plt.figure(figsize=(45, 29))
+        plt.figure(figsize=(41, 27))
         x = np.arange(len(pair_df))
         width = 0.5
         unique_interactions = self.merged_df['Interaction Type'].unique()
-        color_palette = sns.color_palette("tab10", len(unique_interactions))
+        #color_palette = sns.color_palette("tab10", len(unique_interactions))
 
         total_interactions_per_pair = np.zeros((len(pair_df), len(unique_interactions)))
         for i, pair in enumerate(pair_df):
@@ -526,19 +527,25 @@ class RNA(object):
 
         bottom = None
         for i, interaction in enumerate(unique_interactions):
-            plt.bar(x, total_interactions_per_pair[:, i], width, label=interaction, bottom=bottom, color=color_palette[i])
+            color = color_palette.get(interaction, 'black')
+            plt.bar(x, total_interactions_per_pair[:, i], width, label=interaction, bottom=bottom, color=color)
             if bottom is None:
                 bottom = total_interactions_per_pair[:, i]
             else:
                 bottom += total_interactions_per_pair[:, i]
 
+        def custom_sort(x):
+            return int(x.split('-')[0][1:])
+
+        pair_df = sorted(pair_df, key=custom_sort)
+
         self.plot_name = f'interaction_barplot.png'
         plt.xlabel('Base Pair', fontsize=26)
         plt.ylabel('Count', fontsize=26)
         plt.title('Number of interactions per base pair', fontsize=28)
-        plt.xticks(x, pair_df, fontsize=16, rotation=45)
+        plt.xticks(x, pair_df, fontsize=18, rotation=45)
         plt.yticks(fontsize=18)
-        plt.legend(fontsize=10)
+        plt.legend(fontsize=18)
         if self.outdir:
             plt.savefig(os.path.join(self.outdir, self.plot_name))
         else:
@@ -566,6 +573,38 @@ class RNA(object):
         merged_df = pd.concat([merged_df, self.df_complex])
 
         return merged_df
+
+    def color_palette(self):
+        """
+        Create a dictionary with the interaction types and the color
+        assigned to each interaction type.
+        If the interaction starts with 'c' the color palette will be blue,
+        if it starts with 't' the color will be red, if it starts with 'x'
+        the color palette will be green and if it starts with 'WobbleGU'
+        the color will be purple.
+        """
+        possible_interactions = {
+
+            'cWcW': 'cornflowerblue', 'cWcH': 'royalblue', 'cWcS': 'blue', 'cWcX': 'darkblue',
+            'cHcW': 'green', 'cHcH': 'limegreen', 'cHcS': 'springgreen', 'cHcX': 'darkgreen',
+            'cScW': 'slateblue', 'cScH': 'rebeccapurple', 'cScS': 'mediumorchid', 'cScX': 'violet',
+            'cXcW': 'deeppink', 'cXcH': 'pink', 'cXcS': 'hotpink', 'cXcX': 'salmon',
+
+            'tWtW': 'aquamarine', 'tWtH': 'mediumturquoise', 'tWtS': 'paleturquoise', 'tWtX': 'cyan',
+            'tHtW': 'steelblue', 'tHtH': 'lightslategray', 'tHtS': 'grey', 'tHtX': 'silver',
+            'tStW': 'bisque', 'tStH': 'burlywood', 'tStS': 'antiquewhite', 'tStX': 'blanchedalmond',
+            'tXtW': 'goldenrod', 'tXtH': 'gold', 'tXtS': 'khaki', 'tXtX': 'darkkhaki',
+
+            'xWxW': 'olive', 'xWxH': 'yellow', 'xWxS': 'yellowgreen', 'xWxX': 'lightyellow',
+            'xHxW': 'palegreen', 'xHxH': 'darkseagreen', 'xHxS': 'chartreuse', 'xHxX': 'mediumspringgreen',
+            'xSxW': 'peru', 'xSxH': 'peachpuff', 'xSxS': 'sienna', 'xSxX': 'saddlebrown',
+            'xXxW': 'orangered', 'xXxH': 'red', 'xXxS': 'tomato', 'xXxX': 'crimson',
+
+            'WobbleGU': 'firebrick'
+
+        }
+
+        return possible_interactions
 
 """
 --------------------------------------
@@ -624,7 +663,7 @@ if __name__ == '__main__':
         if args.dataframe == 'complex':
             merged_df = pd.DataFrame()
             merged_df = rnaobj.merge_df(merged_df)
-            rnaobj.plot_df_interactions(merged_df)
+            rnaobj.plot_df_interactions(merged_df, rnaobj.color_palette())
 
     if args.dir:
         files = get_files(args.dir)
@@ -637,7 +676,7 @@ if __name__ == '__main__':
             rnaobj = RNA(pdbfile=file)
             if args.dataframe == 'complex':
                 merged_df = rnaobj.merge_df(merged_df)
-        rnaobj.plot_df_interactions(merged_df)
+        rnaobj.plot_df_interactions(merged_df, rnaobj.color_palette())
 
 
     # print(rnaobj.df_interactions)
