@@ -14,7 +14,7 @@ import os
 class RNA(object):
     """
     """
-    def __init__(self, pdbfile, init_index=None, test=False, outdir=None):
+    def __init__(self, pdbfile, test=False, outdir=None):
         """
         Class for RNA structure
 
@@ -455,6 +455,7 @@ class RNA(object):
             if wobbleGU:
                 df_complex.loc[index, 'Interaction Type'] = 'WobbleGU'
 
+
         self.df_complex = df_complex
         #print(self.df_complex)
         if self.test:
@@ -502,6 +503,9 @@ class RNA(object):
         # Test is not working for plot_df_interactions
         pair_df = []
         pair_df_index = {}
+        # Change the residue number to another index in the column
+        # BaseId1 and BaseId2 of the dataframe
+        merged_df = self.init_index(merged_df)
         self.merged_df = merged_df
         self.merged_df.to_csv('merged_df.txt', index=True, sep='\t')
         for index, row in self.merged_df.iterrows():
@@ -510,8 +514,13 @@ class RNA(object):
                 pair_df_index[bp_label] = len(pair_df)
                 pair_df.append(bp_label)
 
+        def custom_sort(x):
+            return int(x.split('-')[0][1:])
+
+        pair_df = sorted(pair_df, key=custom_sort)
+
         sns.set_theme(style="whitegrid")
-        plt.figure(figsize=(41, 27))
+        plt.figure(figsize=(38, 25))
         x = np.arange(len(pair_df))
         width = 0.5
         unique_interactions = self.merged_df['Interaction Type'].unique()
@@ -534,10 +543,6 @@ class RNA(object):
             else:
                 bottom += total_interactions_per_pair[:, i]
 
-        def custom_sort(x):
-            return int(x.split('-')[0][1:])
-
-        pair_df = sorted(pair_df, key=custom_sort)
 
         self.plot_name = f'interaction_barplot.png'
         plt.xlabel('Base Pair', fontsize=26)
@@ -605,6 +610,15 @@ class RNA(object):
         }
 
         return possible_interactions
+
+    def init_index(self, dataframe):
+        """
+        Set the initial index for the nucleotides.
+        """
+        init_index = 6
+        dataframe['BaseId1'] += init_index
+        dataframe['BaseId2'] += init_index
+        return dataframe
 
 """
 --------------------------------------
