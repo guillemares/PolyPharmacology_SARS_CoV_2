@@ -1,0 +1,26 @@
+
+ ********************************************************************
+ * US-align (Version 20240319)                                      *
+ * Universal Structure Alignment of Proteins and Nucleic Acids      *
+ * Reference: C Zhang, M Shine, AM Pyle, Y Zhang. (2022) Nat Methods*
+ *            C Zhang, AM Pyle (2022) iScience.                     *
+ * Please email comments and suggestions to zhang@zhanggroup.org    *
+ ********************************************************************
+Average aligned length= 44, RMSD=   0.72, Seq_ID=n_identical/n_aligned= 1.000
+Average TM-score= 0.85422 (normalized by length of shorter structure: L=44, d0=1.46)
+Average TM-score= 0.85422 (normalized by length of longer structure: L=44, d0=1.46)
+Average TM-score= 0.85422 (normalized by average L=44.00 and d0=1.46)
+In the following, seqID=n_identical/L.
+
+>./trRosetta_5.pdb:A	L=44	d0=1.46	seqID=1.000	TM-score=0.85180
+cuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./trRosetta_2.pdb:A	L=44	d0=1.46	seqID=1.000	TM-score=0.85515
+cuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./trRosetta_4.pdb:A	L=44	d0=1.46	seqID=1.000	TM-score=0.86230
+cuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./trRosetta_3.pdb:A	L=44	d0=1.46	seqID=1.000	TM-score=0.83794
+cuguguggcugucacucggcugcaugcuuagugcacucacgcag
+>./trRosetta_1.pdb:A	L=44	d0=1.46	seqID=1.000	TM-score=0.86389	*
+cuguguggcugucacucggcugcaugcuuagugcacucacgcag
+
+#Total CPU time is  0.07 seconds

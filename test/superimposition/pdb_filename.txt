@@ -1,0 +1,10 @@
+./sup.4.pdb
+./trRosetta_5.pdb
+./trRosetta_2.pdb
+./sup.3.pdb
+./trRosetta_4.pdb
+./sup.0.pdb
+./sup.1.pdb
+./sup.2.pdb
+./trRosetta_3.pdb
+./trRosetta_1.pdb

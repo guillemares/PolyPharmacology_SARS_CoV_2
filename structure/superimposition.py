@@ -13,6 +13,7 @@ import scipy.spatial.distance as ssd
 
 class superimposition(object):
     def __init__(self, method, dir, test=False):
+
         self.method = method
         self.dir = dir
         self.test = test
@@ -30,11 +31,10 @@ class superimposition(object):
         files: list
             List of pdb files in the directory
 
-        >>> superimpobj = superimposition(method='1vs1', dir='../test/superimposition/', test=True)
+        >>> superimpobj = superimposition(method='1vs1', dir='/home/cactus/guillem/3D_RNAlysis/test/superimposition/', test=True)
         >>> superimpobj._get_files()
-        0
         """
-
+        #print(self.dir)
         os.chdir(self.dir)
         os.system("""find . -type d -exec sh -c 'cd "{}" && find . -type f -name "*.pdb" > pdb_filename.txt' \;""")
 
@@ -43,9 +43,7 @@ class superimposition(object):
         models_pdb = [x.strip() for x in models_pdb]
         self.models_pdb = models_pdb
 
-        if self.test:
-            return models_pdb
-        else:
+        if not self.test:
             return 0
 
     def _1_vs_1(self):
@@ -60,9 +58,9 @@ class superimposition(object):
         rmsd: numpy array
             Matrix with RMSD values between pairs of structures
 
-        # >>> superimpobj = superimposition('1vs1', 'test')
-        # >>> superimpobj._1_vs_1()
-        #
+        >>> superimpobj = superimposition(method='1vs1', dir='/home/cactus/guillem/3D_RNAlysis/test/superimposition/', test=True)
+        >>> superimpobj._1_vs_1()
+        ((5, 5), (5, 5))
         """
 
         self.tm_score = np.zeros((len(self.models_pdb), len(self.models_pdb)))
@@ -90,13 +88,16 @@ class superimposition(object):
                     self.tm_score[j, i] = tm_score_value
 
         if self.test:
-            return self.tm_score, self.rmsd
+            return self.rmsd.shape, self.tm_score.shape
         else:
             return 0
 
     def compress_files_1vs1(self):
         """
         Compress the 1vs1 pdb files and the alignment files in a .tar.gz file.
+
+        >>> superimpobj = superimposition(method='1vs1', dir='/home/cactus/guillem/3D_RNAlysis/test/superimposition/', test=True)
+        >>> superimpobj.compress_files_1vs1()
         """
         os.system("tar -czvf alignment_1vs1.tar.gz align_*")
         os.system("rm align_*")
@@ -105,10 +106,17 @@ class superimposition(object):
     def df_1vs1(self):
         """
         Create a dataframe with the RMSD and TM scores between pairs of structures.
+        #>>> superimpobj = superimposition(method='1vs1', dir='/home/cactus/guillem/3D_RNAlysis/test/superimposition/', test=True)
+        #>>> superimpobj.df_1vs1()
+        ((5, 5), (5, 5))
         """
         self.data_rmsd = pd.DataFrame(self.rmsd, columns=self.models_pdb, index=self.models_pdb)
         self.data_tm = pd.DataFrame(self.tm_score, columns=self.models_pdb, index=self.models_pdb)
 
+        if self.test:
+            return self.data_rmsd.shape, self.data_tm.shape
+        #else:
+        #    return 0
         return 0
 
     def _all_vs_all(self):
@@ -123,9 +131,9 @@ class superimposition(object):
         tm_score: float
             Average TM-score value
 
-        # >>> superimpobj = superimposition('allvsall', 'test')
-        # >>> superimpobj._all_vs_all()
-        #
+        >>> superimpobj = superimposition(method='1vs1', dir='/home/cactus/guillem/3D_RNAlysis/test/superimposition/', test=True)
+        >>> superimpobj._all_vs_all()
+        ('0.72', '0.85422')
         """
         os.system(""" ../../USalign -dir ./ pdb_filename.txt -mm 4 -rasmol sup > 'alignment.txt' """)
 
@@ -147,6 +155,9 @@ class superimposition(object):
     def compress_files_allvsall(self):
         """
         Compress the allvsall pdb files and the alignment files in a .tar.gz file.
+
+        >>> superimpobj = superimposition(method='1vs1', dir='/home/cactus/guillem/3D_RNAlysis/test/superimposition/', test=True)
+        >>> superimpobj.compress_files_allvsall()
         """
         os.system("tar -czvf alignment_allvsall.tar.gz sup*")
         os.system("rm sup*")
