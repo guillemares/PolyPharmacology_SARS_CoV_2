@@ -1,5 +1,7 @@
-from 3D_RNAlysis import rna
-
+from aRNAlysis import rna
+import glob
+import doctest
+import argparse
 
 def plot_ensemble_interactions(rnas):
     """
@@ -10,8 +12,7 @@ def plot_ensemble_interactions(rnas):
     return 0
 
 
-if if __name__ == "__main__":
-    import glob
+if __name__ == "__main__":
     rnas_files = glob.glob('*.pdb')
     rnas = []
     for rna_file in rnas_files:
