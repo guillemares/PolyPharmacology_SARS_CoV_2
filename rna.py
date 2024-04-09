@@ -433,8 +433,13 @@ class RNA(object):
                 basepair_hbonds_names[basepair].append(hbond_name)
 
         # Fill df_complex with the new HBonds
-        self.max_hbonds = max([len(hbonds) for hbonds in
+        try:
+            self.max_hbonds = max([len(hbonds) for hbonds in
                         basepair_hbonds_names.values()])
+        except ValueError:
+            self.max_hbonds = 0
+        #self.max_hbonds = max([len(hbonds) for hbonds in
+        #                basepair_hbonds_names.values()])
         for i in range(self.max_hbonds):
             df_complex['Hbond' + str(i+1)] = None
         for basepair, hbond_names in basepair_hbonds_names.items():
@@ -615,7 +620,7 @@ class RNA(object):
         """
         Set the initial index for the nucleotides.
         """
-        init_index = 6
+        init_index = 83
         dataframe['BaseId1'] += init_index
         dataframe['BaseId2'] += init_index
         return dataframe
