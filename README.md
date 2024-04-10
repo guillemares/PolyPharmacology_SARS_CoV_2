@@ -1,8 +1,8 @@
-# 3D-RNAlysis
+# aRNAlysis
 
 This repository offers a series of Python scripts designed to analyze the three-dimensional structure of multiple single strain RNA molecules.
 
------- **3D_RNAlysis is currently under development** ------
+------ **aRNAlysis is currently under development** ------
 
 ## Features
 - **Base Pair Detection:** The included scripts allow for the identification of single chain RNAs intra-bp, returning the type of interaction using Biotite packages.
@@ -11,11 +11,11 @@ This repository offers a series of Python scripts designed to analyze the three-
   
 - **Hydrogen Bond Identification:** In addition to base pairs, the user is allowed to compute not only base pair H-bonds but all H-bonds in a RNA structure for a more exhaustive analysis.
 
-- **RNA Superimposition:** Given a multiple set of RNAs, 3D-RNAlysis can superpose the structures and compute RMSD and TM-score using US-align packages using two methods.
+- **RNA Superimposition:** Given a multiple set of RNAs, aRNAlysis can superpose the structures and compute RMSD and TM-score using US-align packages using two methods.
   - *1 vs 1:* Every structure is superimposed with the rest of files in order to generate a matrix of RMSDs and TM-scores
   - *All vs All:* Given a multiple set of structures, a single superposition is given for all RNAs with a unique average RMSD.
 
-- **Analysis and Clustering:** Using the information calculated in the RNA Superimposition, 3D-RNAlysis provides two possible classifications.
+- **Analysis and Clustering:** Using the information calculated in the RNA Superimposition, aRNAlysis provides two possible classifications.
   - *Heatmaps*
   - *Clustering*
 
