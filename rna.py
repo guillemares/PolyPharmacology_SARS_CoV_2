@@ -14,7 +14,7 @@ import os
 class RNA(object):
     """
     """
-    def __init__(self, pdbfile, test=False, outdir=None):
+    def __init__(self, pdbfile, test=False, outdir=None, index=False):
         """
         Class for RNA structure
 
@@ -38,16 +38,19 @@ class RNA(object):
         self.biotite_atom_array = pdb.get_structure(self.biotite_pdb)[0]
         self.biotite_nucleotides = self.biotite_atom_array[
             struc.filter_nucleotides(self.biotite_atom_array)]
+
+        print(self.biotite_nucleotides)
+        if index:
+            self._reset_index(index)
+        #print(self.biotite_nucleotides)
+
         self._get_nucleotides()
-        # if init_index:
-        #    self._reset_index(init_index)
         self._get_basepairs()
         self._get_glycosidic_bonds()
         self._get_edges()
         self._get_interactions()
         self.get_df_simple()
 
-    # _reset_index NOT working!
     def _reset_index(self, init_index):
         """
         This function resets the index of the nucleotides to start from
@@ -58,10 +61,19 @@ class RNA(object):
         init_index: integer
             Index used to reset the first nucleotide index.
         """
-        new_index = init_index
-        for i in range(len(self.biotite_nucleotides)):
-            self.biotite_nucleotides[i] = new_index
-            new_index += 1
+
+        for atom in self.biotite_nucleotides:
+            first_index = atom.res_id
+            break
+        print(init_index, 'init index')
+        new_index = init_index - first_index
+
+        for atom in struc.residue_iter(self.biotite_nucleotides):
+            print('atom.res_id',atom.res_id)
+            atom.res_id += new_index
+            print(atom.res_id)
+
+        print('self.biotite.nucleotides',self.biotite_nucleotides)
         return 0
 
     def _get_nucleotides(self):
@@ -625,6 +637,7 @@ class RNA(object):
         dataframe['BaseId2'] += init_index
         return dataframe
 
+
 """
 --------------------------------------
 --------------------------------------
@@ -668,6 +681,9 @@ if __name__ == '__main__':
                         default='simple')
     parser.add_argument('--out',
                         help='Path to the output directory')
+    parser.add_argument('--index',
+                        help='Initial index for the nucleotides',
+                        type=int)
 
     args = parser.parse_args()
 
@@ -678,7 +694,10 @@ if __name__ == '__main__':
 
     if args.pdb:
         #print(args.pdb)
-        rnaobj = RNA(pdbfile=args.pdb)
+        if args.index:
+            rnaobj = RNA(pdbfile=args.pdb, index=args.index)
+        else:
+            rnaobj = RNA(pdbfile=args.pdb)
         if args.dataframe == 'complex':
             merged_df = pd.DataFrame()
             merged_df = rnaobj.merge_df(merged_df)
@@ -692,11 +711,10 @@ if __name__ == '__main__':
         merged_df = pd.DataFrame()
         for file in files:
             print(file)
-            rnaobj = RNA(pdbfile=file)
+            rnaobj = RNA(pdbfile=file, index=args.index)
             if args.dataframe == 'complex':
                 merged_df = rnaobj.merge_df(merged_df)
         rnaobj.plot_df_interactions(merged_df, rnaobj.color_palette())
-
 
     # print(rnaobj.df_interactions)
 
