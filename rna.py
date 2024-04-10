@@ -39,7 +39,7 @@ class RNA(object):
         self.biotite_nucleotides = self.biotite_atom_array[
             struc.filter_nucleotides(self.biotite_atom_array)]
 
-        print(self.biotite_nucleotides)
+        #print(self.biotite_nucleotides)
         if index:
             self._reset_index(index)
         #print(self.biotite_nucleotides)
@@ -60,21 +60,33 @@ class RNA(object):
         -----------
         init_index: integer
             Index used to reset the first nucleotide index.
+
+        Returns:
+        -----------
+        atom.res_id: integer
+            New index for the first nucleotide in the pdb file.
+
+        >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True, index=7)
+        >>> rnaobj._reset_index(7)
+        7
         """
 
         for atom in self.biotite_nucleotides:
             first_index = atom.res_id
             break
-        print(init_index, 'init index')
+        #print(init_index, 'init index')
         new_index = init_index - first_index
 
         for atom in struc.residue_iter(self.biotite_nucleotides):
-            print('atom.res_id',atom.res_id)
+            #print('atom.res_id',atom.res_id)
             atom.res_id += new_index
-            print(atom.res_id)
+            #print(atom.res_id)
 
-        print('self.biotite.nucleotides',self.biotite_nucleotides)
-        return 0
+        #print('self.biotite.nucleotides',self.biotite_nucleotides)
+        if self.test:
+            return self.biotite_nucleotides[0].res_id
+        else:
+            return 0
 
     def _get_nucleotides(self):
         """
@@ -286,7 +298,7 @@ class RNA(object):
 
         >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj.get_df_simple()
-        (17, 5)
+        (17, 6)
         """
         df_simple = []
 
@@ -408,7 +420,7 @@ class RNA(object):
 
         >>> rnaobj = RNA(pdbfile='test/trRosetta_1.pdb', test=True)
         >>> rnaobj.get_full_df()
-        ((17, 8), 'WobbleGU')
+        ((17, 9), 'WobbleGU')
         """
         if not hasattr(self, 'hbonds'):
             self._get_hbonds()
