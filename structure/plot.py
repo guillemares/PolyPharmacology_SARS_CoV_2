@@ -15,7 +15,7 @@ def heatmap(data_rmsd, data_tm):
     """
     sns.set_theme()
     plt.figure(figsize=(18, 18))
-    sns.heatmap(data_rmsd, annot=True, fmt=".2f", annot=True, cmap="YlGnBu", fmt=".2f", linewidths=0.5, linecolor="white")
+    sns.heatmap(data_rmsd, annot=True, fmt=".2f", cmap="YlGnBu", linewidths=0.5, linecolor="white")
     plt.title("Superimposition Heatmap", fontsize=22)
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
@@ -36,7 +36,7 @@ def clustermap(data_rmsd, data_tm):
     plt.show()
     # plt.savefig("clustermap.pdf")
 
-def plot_dendrograms(self, data_rmsd, data_tm):
+def plot_dendrograms(data_rmsd, data_tm, threshold):
     """
     Given the RMSD and TM scores dataframes
     from superimposition.py, create dendrograms.
@@ -45,13 +45,16 @@ def plot_dendrograms(self, data_rmsd, data_tm):
     plt.title('Hierarchical Clustering Dendrogram', fontsize=20)
     plt.xlabel('sample index', fontsize=18)
     plt.ylabel('distance', fontsize=18)
-    dendrogram = sch.dendrogram(sch.linkage(data_rmsd.values, method='average', metric='euclidean'), labels=data_rmsd.index, leaf_rotation=50., leaf_font_size=8.)
-    plt.yticks(fontsize=10)
+    dendrogram = sch.dendrogram(sch.linkage(data_rmsd.values, method='average', metric='euclidean'), labels=data_rmsd.index, leaf_rotation=90., leaf_font_size=8., color_threshold=threshold, above_threshold_color='grey')
+    plt.yticks(fontsize=12)
+    plt.xticks(fontsize=12)
+    plt.axhline(y=threshold, color='r', linewidth=2.5)
+    plt.tight_layout()
     plt.savefig("dendrogram.png", dpi=300)
 
     return 0
 
-def clustering(self, data_rmsd, data_tm):
+def clustering(data_rmsd, data_tm):
     """
     Given the RMSD and TM scores dataframes
     from superimposition.py, perform clustering.
@@ -71,24 +74,24 @@ def clustering(self, data_rmsd, data_tm):
         cluster_centers[cluster] = np.mean(data_rmsd.loc[clusters_dic[cluster], clusters_dic[cluster]].values)
         print('center cluster%d: %.2f' % (cluster, cluster_centers[cluster]))
 
-    self.clusters_dic = clusters_dic
-    self.clusters = clusters
-    self.cluster_centers = cluster_centers
+    #self.clusters_dic = clusters_dic
+    #self.clusters = clusters
+    #self.cluster_centers = cluster_centers
 
-    return 0
+    return clusters_dic, clusters, cluster_centers
 
-def closest_to_center(self, data_rmsd, data_tm):
+def closest_to_center(clusters_dic, cluster_centers, data_rmsd, data_tm):
     """
     Given the RMSD and TM scores dataframes
     from superimposition.py, find the closest
     structure to the center of the cluster.
     """
 
-    for cluster in self.clusters_dic.keys():
-        print('cluster%d: %s' % (cluster, self.clusters_dic[cluster]))
-        center=self.cluster_centers[cluster]
-        elements=self.clusters_dic[cluster]
-        submatrix=self.data_tm_score.loc[elements, elements]
+    for cluster in clusters_dic.keys():
+        print('cluster%d: %s' % (cluster, clusters_dic[cluster]))
+        center=cluster_centers[cluster]
+        elements=clusters_dic[cluster]
+        submatrix=data_tm.loc[elements, elements]
         distances=np.sum(submatrix, axis=0)
         index=np.argmin(distances)
         print('representative element: %s' % elements[index])
@@ -96,12 +99,15 @@ def closest_to_center(self, data_rmsd, data_tm):
     return 0
 
 def main():
-    superimpobj = superimposition(method='1vs1', dir='../test/superimposition/', test=True)
+    superimpobj = superimposition(method='1vs1', dir='../test/superimposition/', test=False)
     superimpobj._1_vs_1()
-    heatmap(superimpobj.data_rmsd, superimpobj.data_tm_score)
-    clustermap(superimpobj.data_rmsd, superimpobj.data_tm_score)
-    plot_dendrograms(superimpobj.data_rmsd, superimpobj.data_tm_score)
-    clustering(superimpobj.data_rmsd, superimpobj.data_tm_score)
-    closest_to_center(superimpobj.data_rmsd, superimpobj.data_tm_score)
+    superimpobj.compress_files_1vs1()
+    data_rmsd, data_tm = superimpobj.df_1vs1()
+    heatmap(data_rmsd, data_tm)
+    clustermap(data_rmsd, data_tm)
+    plot_dendrograms(data_rmsd, data_tm, threshold=0.8)
+    clusters_dic, clusters, cluster_centers = clustering(data_rmsd, data_tm)
+    closest_to_center(clusters_dic, cluster_centers, data_rmsd, data_tm)
+
 
 main()

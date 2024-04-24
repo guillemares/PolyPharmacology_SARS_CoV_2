@@ -115,9 +115,9 @@ class superimposition(object):
 
         if self.test:
             return self.data_rmsd.shape, self.data_tm.shape
-        #else:
-        #    return 0
-        return 0
+        else:
+            return self.data_rmsd, self.data_tm
+
 
     def _all_vs_all(self):
         """
