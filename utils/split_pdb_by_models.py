@@ -5,7 +5,7 @@ import glob
 """
 In this script we split pdb files by models, since some
 of the 3D structure prediction tools generate multiple
-models in a single pdb file and the tools in aRNAlysis 
+models in a single pdb file and the tools in aRNAlysis
 pipeline require single model pdb files.
 """
 
@@ -37,7 +37,7 @@ def main():
     outdir = os.path.join(indir, "Models")
     if not os.path.exists(outdir):
         os.makedirs(outdir)
-    
+
     pdb_files = glob.glob(os.path.join(indir, "*.pdb"))
     for pdb_file in pdb_files:
         split_pdbs(pdb_file, outdir)

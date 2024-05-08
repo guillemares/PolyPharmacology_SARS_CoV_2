@@ -491,9 +491,9 @@ class RNA(object):
             #return self.df_complex.shape
             return self.df_complex.shape, self.df_complex.loc[14, 'Interaction Type']
         else:
-            return 0
+            return df_complex, 0
 
-    def save_df_simple(self, outname):
+    def save_df_simple(self, outdir):
         """
         Store the dataframe in a txt/csv file. The df stored
         will be the one the user has computed, simple or complex.
@@ -502,9 +502,9 @@ class RNA(object):
         if not os.path.exists(outdir):
             os.makedirs(outdir)
         out_file = os.path.join(outdir, f'dataframe.txt')
-        df.to_csv(out_file, type='txt', index=False, sep='\t')
+        self.df_simple.to_csv(out_file, type='txt', index=False, sep='\t')
 
-    def save_df_complex(self, outname):
+    def save_df_complex(self, outdir):
         """
 
         """
@@ -602,8 +602,11 @@ class RNA(object):
             Dataframe to be merged.
 
         """
-
-        rnaobj.get_full_df()
+        try:
+            rnaobj.get_full_df()
+        except NameError:
+            None
+        # rnaobj.get_full_df()
         merged_df = pd.concat([merged_df, self.df_complex])
 
         return merged_df
