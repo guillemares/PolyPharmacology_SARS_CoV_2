@@ -5,7 +5,8 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import glob
-# sys.path.insert(0,'../')
+sys.path.insert(0,'../')
+# from ..main import *
 from rna import RNA
 
 """
