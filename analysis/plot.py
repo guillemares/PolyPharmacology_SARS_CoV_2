@@ -5,8 +5,8 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import glob
-# sys.path.insert(0,'/home/cactus/guillem/aRNAlysis')
-from aRNAlysis.rna import RNA
+# sys.path.insert(0,'../')
+from rna import RNA
 
 """
 Given an ensemble of RNA structures with the same
