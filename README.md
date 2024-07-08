@@ -24,6 +24,8 @@ This repository offers a series of Python scripts designed to analyze the three-
 - Python3 (3.8.17) with sys, numpy, pandas, seaborn, matplotlib, glob, os, scipy packages installed
 - Biotite (0.39.0) ---> See [installation guide](https://www.biotite-python.org/install.html).
 - USAlign (Version 20231222) ---> See [installation guide](https://zhanggroup.org/US-align/).
+- MDtraj
+- barnaba
 
 ## Installation
 ## Usage
